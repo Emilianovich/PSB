@@ -27,9 +27,6 @@ potential-bugs:
   EqualsWithHashCodeExist:
     active: true
 
-  DuplicateCaseInWhenExpression:
-    active: true
-
 exceptions:
   SwallowedException:
     active: true
