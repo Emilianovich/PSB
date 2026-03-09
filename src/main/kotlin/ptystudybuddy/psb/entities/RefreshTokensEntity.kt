@@ -9,21 +9,15 @@ import jakarta.persistence.Table
 import java.sql.Timestamp
 
 @Entity
-@Table(name="refresh_tokens")
+@Table(name = "refresh_tokens")
 class RefreshTokensEntity(
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-
     @Column(nullable = false)
     val token: String,
-
-    @Column(columnDefinition="TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     val expiry: Timestamp,
-
-    @Column(nullable=false)
-    val role: String
-
-
+    @Column(nullable = false)
+    val role: String,
 )

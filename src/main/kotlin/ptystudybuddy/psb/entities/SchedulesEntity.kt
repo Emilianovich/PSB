@@ -7,20 +7,15 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.sql.Timestamp
 
-
 @Entity
 @Table(name = "schedules")
 class SchedulesEntity(
-
     @Id
     val id: String? = null,
-
-    @Column(nullable = false, columnDefinition="TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     val start_time: Timestamp,
-
-    @Column(nullable = false, columnDefinition="TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     val end_time: Timestamp,
-
     @OneToMany(mappedBy = "schedule_id")
-    val availability: MutableList<AvailabilityEntity> = mutableListOf()
+    val availability: MutableList<AvailabilityEntity> = mutableListOf(),
 )

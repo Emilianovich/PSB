@@ -10,34 +10,27 @@ import jakarta.persistence.Table
 import java.io.Serializable
 
 @Embeddable
-class SessionAssignmentId(
-
+data class SessionAssignmentId(
     val subject_id: String,
     val tutor_id: String,
     val session_id: String,
-): Serializable
+) : Serializable
 
 @Entity
 @Table(name = "session_assignment")
 class SessionAssignmentEntity(
-
     @EmbeddedId
     val id: SessionAssignmentId,
-
     @ManyToOne
     @MapsId("subject_id")
     @JoinColumn(name = "subject_id", nullable = false)
     val subject_id: SubjectsEntity,
-
     @ManyToOne
     @MapsId("tutor_id")
     @JoinColumn(name = "tutor_id", nullable = false)
     val tutor_id: TutorsEntity,
-
     @ManyToOne
     @MapsId("session_id")
     @JoinColumn(name = "session_id", nullable = false)
     val session_id: SessionsEntity,
-
-
-    )
+)
