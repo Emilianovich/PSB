@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Ejecutando Spotless y Detekt..."
+./mvnw spotless:apply detekt:check
