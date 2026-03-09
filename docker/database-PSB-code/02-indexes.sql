@@ -1,0 +1,13 @@
+CREATE INDEX idx_tutors_social_id ON tutors(social_id);
+CREATE INDEX idx_pending_tutors_blacklisted_at ON pending_tutors(blacklisted_at);
+CREATE INDEX idx_availability_class_id ON availability(class_id);
+CREATE INDEX idx_availability_schedule_id ON availability(schedule_id);
+CREATE INDEX idx_sessions_availability_id ON sessions(availability_id);
+CREATE INDEX idx_session_assignment_tutor_id ON session_assignment(tutor_id);
+CREATE INDEX idx_session_assignment_session_id ON session_assignment(session_id);
+CREATE INDEX idx_reviews_student_id ON reviews(student_id);
+CREATE INDEX idx_reviews_tutor_id ON reviews(tutor_id);
+CREATE INDEX idx_reviews_session_id ON reviews(session_id);
+CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+CREATE INDEX idx_admins_social_id ON admins(social_id);
+CREATE INDEX idx_inscriptions_session_id ON inscriptions(session_id);

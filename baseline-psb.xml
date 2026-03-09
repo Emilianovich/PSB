@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:PsbApplicationTests.kt$PsbApplicationTests${ }</ID>
+    <ID>SpreadOperator:PsbApplication.kt$(*args)</ID>
+  </CurrentIssues>
+</SmellBaseline>

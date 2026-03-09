@@ -1,0 +1,68 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 60
+
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+
+  NestedBlockDepth:
+    active: true
+    threshold: 4
+
+potential-bugs:
+  UnsafeCast:
+    active: true
+
+  UnreachableCode:
+    active: true
+
+  EqualsWithHashCodeExist:
+    active: true
+
+  DuplicateCaseInWhenExpression:
+    active: true
+
+exceptions:
+  SwallowedException:
+    active: true
+
+  ThrowingExceptionFromFinally:
+    active: true
+
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - Exception
+      - Throwable
+      - RuntimeException
+
+performance:
+  ForEachOnRange:
+    active: true
+
+empty-blocks:
+  EmptyCatchBlock:
+    active: true
+
+  EmptyFunctionBlock:
+    active: true
+
+style:
+  UnusedPrivateMember:
+    active: true
+
+  MagicNumber:
+    active: true
+    ignoreNumbers:
+      - -1
+      - 0
+      - 1
+      - 2
