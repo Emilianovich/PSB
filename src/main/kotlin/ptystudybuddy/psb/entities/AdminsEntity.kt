@@ -10,23 +10,17 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "admins")
 class AdminsEntity(
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-
     @Column(nullable = false)
     val social_id: String,
-
     @Column(nullable = false)
     val fullname: String,
-
     @Column(nullable = false)
     val email: String,
-
     @Column(nullable = false)
     val password: String,
-
     @Column(nullable = false)
-    val role: String
+    val role: String,
 )
