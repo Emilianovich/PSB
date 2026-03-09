@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class PsbApplication
 
 fun main(args: Array<String>) {
-	runApplication<PsbApplication>(*args)
+    runApplication<PsbApplication>(*args)
 }
