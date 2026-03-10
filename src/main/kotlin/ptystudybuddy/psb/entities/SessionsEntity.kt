@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "sessions")
@@ -22,14 +22,14 @@ class SessionsEntity(
     @Column
     val available_slots: Int,
     @Column
-    val attendance_marked: Boolean,
+    val attendance_marked: Boolean? = null,
     @Column(nullable = false)
-    val status: String,
+    val status: SessionStatus? = null,
     @ManyToOne
     @JoinColumn(name = "availability_id", nullable = false)
     val availability_id: AvailabilityEntity,
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    val end_datetime: Timestamp,
+    val end_datetime: LocalDateTime,
     @OneToMany(mappedBy = "session_id")
     val reviews: MutableList<ReviewsEntity> = mutableListOf(),
     @OneToMany(mappedBy = "session_id")
@@ -37,3 +37,7 @@ class SessionsEntity(
     @OneToMany(mappedBy = "session_id")
     val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
+
+enum class SessionStatus {
+    ACTIVE, CANCELLED, NOT_ACTIVE
+}

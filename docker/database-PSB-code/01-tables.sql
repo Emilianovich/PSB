@@ -3,7 +3,11 @@ CREATE TABLE students (
     fullname VARCHAR(255) NOT NULL,
     social_id VARCHAR(15) NOT NULL
         CHECK (social_id REGEXP '^(?:[1-9]|1[0-3]|E|N|PE)-[0-9]{1,4}-[0-9]{1,6}$'),
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE
+        CHECK (
+        email REGEXP '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$'
+        AND email NOT REGEXP '@ptystudybuddy\\.dev$'
+    ),
     password VARCHAR(255) NOT NULL,
     picture TEXT NOT NULL,
     role CHAR(7) NOT NULL DEFAULT 'STUDENT'
@@ -13,11 +17,15 @@ CREATE TABLE students (
 
 CREATE TABLE tutors (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    social_id VARCHAR(15) NOT NULL
+    social_id VARCHAR(15) NOT NULL UNIQUE
         CHECK (social_id REGEXP '^(?:[1-9]|1[0-3]|E|N|PE)-[0-9]{1,4}-[0-9]{1,6}$'),
     fullname VARCHAR(255) NOT NULL,
     cv TEXT NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE
+        CHECK (
+        email REGEXP '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$'
+        AND email NOT REGEXP '@ptystudybuddy\\.dev$'
+    ),
     password VARCHAR(255) NOT NULL,
     picture TEXT,
     score DECIMAL(3,2) DEFAULT 0.00 CHECK (score >= 0 AND score <= 5),
@@ -27,12 +35,17 @@ CREATE TABLE tutors (
 
 
 CREATE TABLE pending_tutors (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     social_id VARCHAR(15) PRIMARY KEY
         CHECK (social_id REGEXP '^(?:[1-9]|1[0-3]|E|N|PE)-[0-9]{1,4}-[0-9]{1,6}$'),
     fullname VARCHAR(255) NOT NULL,
     picture TEXT NOT NULL,
     cv TEXT NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE
+        CHECK (
+        email REGEXP '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$'
+        AND email NOT REGEXP '@ptystudybuddy\\.dev$'
+    ),
     password VARCHAR(255) NOT NULL,
     approved BOOLEAN DEFAULT NULL,
     blacklisted_at TIMESTAMP DEFAULT NULL
@@ -48,11 +61,11 @@ CREATE TABLE classrooms (
 
 CREATE TABLE schedules (
     id CHAR(4) PRIMARY KEY,
-    start_time TIMESTAMP NOT NULL UNIQUE,
-    end_time TIMESTAMP NOT NULL UNIQUE,
+    start_time TIME NOT NULL UNIQUE,
+    end_time TIME NOT NULL UNIQUE,
     CHECK (end_time > start_time),
     CHECK (
-        TIMESTAMPDIFF(HOUR, start_time, end_time) BETWEEN 1 AND 2
+        TIMEDIFF(HOUR, start_time, end_time) BETWEEN 1 AND 2
     )
 );
 
@@ -136,7 +149,8 @@ CREATE TABLE admins (
     social_id VARCHAR(15) NOT NULL
         CHECK (social_id REGEXP '^(?:[1-9]|1[0-3]|E|N|PE)-[0-9]{1,4}-[0-9]{1,6}$'),
     fullname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE
+    CHECK(email REGEXP '^[a-zA-Z0-9._%+\\-]+@ptystudybuddy\\.dev$'),
     password VARCHAR(255) NOT NULL,
     role CHAR(5) NOT NULL DEFAULT 'ADMIN'
         CHECK (role = 'ADMIN')
@@ -153,3 +167,16 @@ CREATE TABLE inscriptions (
     FOREIGN KEY (student_id) REFERENCES students(id),
     FOREIGN KEY (session_id) REFERENCES sessions(id)
 );
+
+INSERT INTO schedules (id, start_time, end_time) VALUES
+ ('S001', '07:00:00', '09:00:00'),
+ ('S002', '09:05:00', '11:05:00'),
+ ('S003', '11:10:00', '13:10:00'),
+ ('S004', '13:15:00', '15:15:00'),
+ ('S005', '15:20:00', '17:20:00'),
+ ('S006', '17:25:00', '19:25:00'),
+ ('S007', '19:30:00', '21:30:00');
+
+INSERT INTO admins (social_id, fullname, email, password) VALUES
+  ('8-1234-56789', 'Steven Ampie', 'steven.ampie@ptystudybuddy.dev', '$2a$12$rAruzY1SvgKlAUrAovZcPu0cRQnfcvfh1wWkbZa4PBP84FQgj2UZ.'),
+  ('8-1022-970', 'Emiola Fagbemi', 'emiola.fagbemi@ptystudybuddy.dev', '$2a$12$qsBZYAstUkNY.ymxM7wpAeVsVexs3PJL7MmWbigzxx1Nm3tCXsU6a');

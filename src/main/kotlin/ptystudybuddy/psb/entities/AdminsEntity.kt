@@ -17,7 +17,7 @@ class AdminsEntity(
     val social_id: String,
     @Column(nullable = false)
     val fullname: String,
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
     @Column(nullable = false)
     val password: String,

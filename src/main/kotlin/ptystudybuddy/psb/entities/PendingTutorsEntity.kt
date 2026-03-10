@@ -2,14 +2,19 @@ package ptystudybuddy.psb.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "pending_tutors")
 class PendingTutorsEntity(
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: String? = null,
+    @Column(nullable = false, unique = true)
     val social_id: String,
     @Column(nullable = false)
     val fullname: String,
@@ -17,12 +22,12 @@ class PendingTutorsEntity(
     val picture: String,
     @Column(nullable = false)
     val cv: String,
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
     @Column(nullable = false)
     val password: String,
     @Column
-    val approved: Boolean,
+    val approved: Boolean? = null,
     @Column
-    val blacklisted_at: Timestamp,
+    val blacklisted_at: LocalDateTime? = null,
 )
