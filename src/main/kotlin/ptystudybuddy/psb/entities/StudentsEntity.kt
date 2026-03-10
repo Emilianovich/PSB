@@ -18,14 +18,13 @@ class StudentsEntity(
     val fullname: String,
     @Column(nullable = false)
     val social_id: String,
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
     @Column(nullable = false)
     val password: String,
     @Column(nullable = false)
     val picture: String,
-    @Column(nullable = false)
-    val role: String? = "STUDENT",
+    val role: String? = null,
     @OneToMany(mappedBy = "student_id")
     val reviews: MutableList<ReviewsEntity> = mutableListOf(),
     @OneToMany(mappedBy = "student_id")

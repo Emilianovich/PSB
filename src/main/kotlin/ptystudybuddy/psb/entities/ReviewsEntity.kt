@@ -8,7 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "reviews")
@@ -21,7 +21,7 @@ class ReviewsEntity(
     @Column(nullable = false)
     val rating: Int,
     @Column(columnDefinition = "TIMESTAMP")
-    val date_time: Timestamp,
+    val date_time: LocalDateTime? = null,
     @ManyToOne
     @JoinColumn(name = "student_id")
     val student_id: StudentsEntity,

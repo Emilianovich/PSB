@@ -9,8 +9,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import java.sql.Timestamp
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "availability")
@@ -27,9 +27,9 @@ class AvailabilityEntity(
     @Column(nullable = false)
     val date: LocalDate,
     @Column
-    val selected: Boolean,
+    val selected: Boolean? = null,
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    val end_datetime: Timestamp,
+    val end_datetime: LocalDateTime,
     @OneToMany(mappedBy = "availability_id")
     val sessions: MutableList<SessionsEntity> = mutableListOf(),
 )

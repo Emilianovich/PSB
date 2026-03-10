@@ -21,7 +21,7 @@ class TutorsEntity(
     val fullname: String,
     @Column(nullable = false)
     val cv: String,
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
     @Column(nullable = false)
     val password: String,
@@ -29,8 +29,7 @@ class TutorsEntity(
     val picture: String,
     @Column(precision = 3, scale = 2)
     val score: BigDecimal,
-    @Column(nullable = false)
-    val role: String? = "TUTOR",
+    val role: String? = null,
     @OneToMany(mappedBy = "tutor_id")
     val reviews: MutableList<ReviewsEntity> = mutableListOf(),
     @OneToMany(mappedBy = "tutor_id")

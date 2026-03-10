@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.MapsId
 import jakarta.persistence.Table
 import java.io.Serializable
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Embeddable
 data class InscriptionId(
@@ -31,9 +31,9 @@ class InscriptionsEntity(
     @JoinColumn(name = "session_id")
     val session_id: SessionsEntity,
     @Column
-    val assisted: Boolean,
+    var assisted: Boolean? = null,
     @Column
-    val evaluation_status: Boolean,
+    var evaluation_status: Boolean? = null,
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    val date_time: Timestamp,
+    val date_time: LocalDateTime? = null,
 )
