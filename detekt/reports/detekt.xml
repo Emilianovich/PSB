@@ -64,8 +64,14 @@
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/PsbApplication.kt">
 	<error line="10" column="35" severity="warning" message="In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty." source="detekt.SpreadOperator" />
 </file>
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt">
+	<error line="5" column="1" severity="warning" message="org.springframework.http.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
+	<error line="8" column="1" severity="warning" message="org.springframework.web.bind.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
+	<error line="9" column="1" severity="warning" message="org.springframework.web.bind.annotation.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
+	<error line="18" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
+	<error line="51" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
+</file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/email/SendGridService.kt">
-	<error line="69" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
-	<error line="27" column="31" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="70" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
 </file>
 </checkstyle>

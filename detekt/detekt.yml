@@ -57,6 +57,9 @@ empty-blocks:
     active: true
 
 style:
+  WildcardImport:
+    active: false
+
   UnusedPrivateMember:
     active: true
 
