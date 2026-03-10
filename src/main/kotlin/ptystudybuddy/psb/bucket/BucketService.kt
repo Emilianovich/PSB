@@ -29,16 +29,17 @@ class BucketService(
 
     fun upload(file: MultipartFile): String {
         try {
+            val extension =
+                file.originalFilename
+                    ?.substringAfterLast('.', "")
+                    ?.takeIf { it.isNotBlank() }
 
-            val extension = file.originalFilename
-                ?.substringAfterLast('.', "")
-                ?.takeIf { it.isNotBlank() }
-
-            val newKey = if (extension != null) {
-                "${UUID.randomUUID()}.$extension"
-            } else {
-                UUID.randomUUID().toString()
-            }
+            val newKey =
+                if (extension != null) {
+                    "${UUID.randomUUID()}.$extension"
+                } else {
+                    UUID.randomUUID().toString()
+                }
 
             val fileUploadRequest =
                 PutObjectRequest
@@ -103,7 +104,6 @@ class BucketService(
         file: MultipartFile,
         fileKey: String,
     ): String {
-
         this.delete(fileKey)
         return this.upload(file)
     }
