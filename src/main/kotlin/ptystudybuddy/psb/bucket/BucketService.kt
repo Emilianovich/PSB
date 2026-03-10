@@ -29,9 +29,16 @@ class BucketService(
 
     fun upload(file: MultipartFile): String {
         try {
-            val newKey =
-                UUID.randomUUID().toString() +
-                    file.originalFilename?.substringAfterLast('.').let { ".$it" }
+
+            val extension = file.originalFilename
+                ?.substringAfterLast('.', "")
+                ?.takeIf { it.isNotBlank() }
+
+            val newKey = if (extension != null) {
+                "${UUID.randomUUID()}.$extension"
+            } else {
+                UUID.randomUUID().toString()
+            }
 
             val fileUploadRequest =
                 PutObjectRequest
@@ -96,17 +103,9 @@ class BucketService(
         file: MultipartFile,
         fileKey: String,
     ): String {
-        try {
-            this.delete(fileKey)
 
-            return this.upload(file)
-        } catch (e: S3Exception) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "File Update Failed: ${e.message}",
-                e,
-            )
-        }
+        this.delete(fileKey)
+        return this.upload(file)
     }
 
     fun getSignedUrl(fileKey: String): String {
