@@ -8,6 +8,10 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 15
 
   CyclomaticComplexMethod:
     active: true
@@ -58,8 +62,4 @@ style:
 
   MagicNumber:
     active: true
-    ignoreNumbers:
-      - -1
-      - 0
-      - 1
-      - 2
+    ignoreNumbers: ['-1', '0', '1', '2']
