@@ -65,4 +65,4 @@ style:
 
   MagicNumber:
     active: true
-    ignoreNumbers: ['-1', '0', '1', '2']
+    ignoreNumbers: ['-1', '0', '1', '2', '3', '30']
