@@ -1,10 +1,8 @@
 package ptystudybuddy.psb.bucket
 
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.server.ResponseStatusException
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
@@ -64,9 +62,8 @@ class BucketService(
 
             return newKey
         } catch (e: S3Exception) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "File Upload Failed: ${e.message}",
+            throw IllegalArgumentException(
+                "File Deletion Failed: ${e.message}",
                 e,
             )
         }
@@ -92,9 +89,8 @@ class BucketService(
 
             return true
         } catch (e: S3Exception) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "File Delete Failed: ${e.message}",
+            throw IllegalArgumentException(
+                "File Deletion Failed: ${e.message}",
                 e,
             )
         }
@@ -128,9 +124,8 @@ class BucketService(
 
             return presignedObject.url().toString()
         } catch (e: S3Exception) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "File Get Signed Url Failed: ${e.message}",
+            throw IllegalArgumentException(
+                "File Deletion Failed: ${e.message}",
                 e,
             )
         }
