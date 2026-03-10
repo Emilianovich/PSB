@@ -21,7 +21,7 @@ class RefreshTokensEntity(
     val expiry: LocalDateTime,
     @Column(nullable = false)
     val userId: String,
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     val created_at: LocalDateTime? = null,
     @Column(nullable = false)
     val role: String,

@@ -36,7 +36,7 @@ CREATE TABLE tutors (
 
 CREATE TABLE pending_tutors (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    social_id VARCHAR(15) PRIMARY KEY
+    social_id VARCHAR(15) UNIQUE
         CHECK (social_id REGEXP '^(?:[1-9]|1[0-3]|E|N|PE)-[0-9]{1,4}-[0-9]{1,6}$'),
     fullname VARCHAR(255) NOT NULL,
     picture TEXT NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE schedules (
     end_time TIME NOT NULL UNIQUE,
     CHECK (end_time > start_time),
     CHECK (
-        TIMEDIFF(HOUR, start_time, end_time) BETWEEN 1 AND 2
+        TIMEDIFF(start_time, end_time) BETWEEN 1 AND 2
     )
 );
 

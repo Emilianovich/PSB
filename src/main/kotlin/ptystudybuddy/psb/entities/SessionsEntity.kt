@@ -2,6 +2,8 @@ package ptystudybuddy.psb.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -23,6 +25,7 @@ class SessionsEntity(
     val available_slots: Int,
     @Column
     val attendance_marked: Boolean? = null,
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val status: SessionStatus? = null,
     @ManyToOne
@@ -39,5 +42,7 @@ class SessionsEntity(
 )
 
 enum class SessionStatus {
-    ACTIVE, CANCELLED, NOT_ACTIVE
+    ACTIVE,
+    CANCELLED,
+    NOT_ACTIVE,
 }
