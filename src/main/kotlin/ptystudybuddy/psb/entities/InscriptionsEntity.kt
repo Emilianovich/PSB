@@ -34,6 +34,6 @@ class InscriptionsEntity(
     var assisted: Boolean? = null,
     @Column
     var evaluation_status: Boolean? = null,
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     val date_time: LocalDateTime? = null,
 )
