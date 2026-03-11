@@ -19,7 +19,9 @@ class StudentsEntity(
   @Column(nullable = false) val password: String,
   @Column(nullable = false) val picture: String,
   val role: String = "STUDENT",
-  @OneToMany(mappedBy = "student_id")   @JsonIgnore val reviews: MutableList<ReviewsEntity> = mutableListOf(),
+  @OneToMany(mappedBy = "student_id")
+  @JsonIgnore
+  val reviews: MutableList<ReviewsEntity> = mutableListOf(),
   @OneToMany(mappedBy = "student_id")
   @JsonIgnore
   val inscriptions: MutableList<InscriptionsEntity> = mutableListOf(),
