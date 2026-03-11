@@ -20,7 +20,7 @@ class ReviewsService(private val reviewsRepository: ReviewsRepository) {
     )
   }
 
-  fun getAllReviews(sessionId: String): ResponseEntity<SuccessRes<List<ReviewsEntity?>>?> {
+  fun getAllReviews(sessionId: String): ResponseEntity<SuccessRes<List<ReviewsEntity>>> {
 
     val reviews =
       reviewsRepository.findAllBySessionId(sessionId).takeIf { it.isNotEmpty() }

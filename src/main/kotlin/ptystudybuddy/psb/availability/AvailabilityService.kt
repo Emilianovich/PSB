@@ -20,7 +20,7 @@ class AvailabilityService(
   val schedulesRepository: SchedulesRepository,
 ) {
 
-  fun getAllAvailabilities(): ResponseEntity<SuccessRes<List<AvailabilityDto>>?> {
+  fun getAllAvailabilities(): ResponseEntity<SuccessRes<List<AvailabilityDto>>> {
 
     val availabilityBlocks =
       availabilityRepository.findAll().takeIf { it.isNotEmpty() }
