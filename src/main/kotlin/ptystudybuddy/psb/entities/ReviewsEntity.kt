@@ -8,6 +8,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
@@ -18,7 +20,8 @@ class ReviewsEntity(
   @field:Size(min = 10, message = "El comentario debe ser mayor a 10 caracteres")
   @Column
   val comment: String?,
-  @field:Size(min = 1, max = 5, message = "Su calificación debe estar entre 1 y 5")
+  @field:Min(1, message = "La calificación mínima es 1")
+  @field:Max(5, message = "La calificación máxima es 5")
   @Column(nullable = false)
   val rating: Int,
   @Column(columnDefinition = "TIMESTAMP") val date_time: LocalDateTime? = null,
