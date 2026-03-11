@@ -8,14 +8,19 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "reviews")
 class ReviewsEntity(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int? = null,
-  @Column val comment: String,
-  @Column(nullable = false) val rating: Int,
+  @field:Size(min = 10, message = "El comentario debe ser mayor a 10 caracteres")
+  @Column
+  val comment: String?,
+  @field:Size(min = 1, max = 5, message = "Su calificación debe estar entre 1 y 5")
+  @Column(nullable = false)
+  val rating: Int,
   @Column(columnDefinition = "TIMESTAMP") val date_time: LocalDateTime? = null,
   @ManyToOne @JoinColumn(name = "student_id") val student_id: StudentsEntity,
   @ManyToOne @JoinColumn(name = "tutor_id") val tutor_id: TutorsEntity,
