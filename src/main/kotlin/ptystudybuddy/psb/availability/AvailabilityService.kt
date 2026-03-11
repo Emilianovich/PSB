@@ -1,11 +1,13 @@
 package ptystudybuddy.psb.availability
 
 import jakarta.persistence.EntityNotFoundException
+import java.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import ptystudybuddy.psb.entities.AvailabilityEntity
+import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.AvailabilityRepository
 import ptystudybuddy.psb.repositories.ClassroomsRepository
@@ -32,6 +34,12 @@ class AvailabilityService(
   fun createAvailability(
     availabilityData: List<AvailabilityDto>
   ): ResponseEntity<SuccessRes<String>> {
+
+    val todayDates = availabilityData.filter { it.date.isEqual(LocalDate.now()) }
+    if (todayDates.isNotEmpty()) {
+      val fields = todayDates.joinToString { it.date.toString() }
+      throw UnprocessableEntityException("No se puede usar la fecha de hoy: $fields")
+    }
 
     val classrooms =
       classroomsRepository.findAllByIdIn(availabilityData.map { it.class_id }).associateBy { it.id }
