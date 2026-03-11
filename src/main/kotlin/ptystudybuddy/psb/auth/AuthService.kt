@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import ptystudybuddy.psb.bucket.BucketService
 import ptystudybuddy.psb.entities.PendingTutorsEntity
 import ptystudybuddy.psb.entities.RefreshTokensEntity
 import ptystudybuddy.psb.entities.StudentsEntity
@@ -38,6 +39,7 @@ class AuthService(
   private val res: HttpServletResponse,
   private val authHelper: AuthHelper,
   private val refreshTokensRepository: RefreshTokensRepository,
+  private val bucketService: BucketService,
 ) {
   fun login(req: LoginReq): ResponseEntity<SuccessRes<String>> {
     val adminRegex = Regex("^[a-zA-Z0-9._%+\\-]+@ptystudybuddy\\.dev$")
@@ -109,7 +111,7 @@ class AuthService(
 
   fun registerStudent(req: StudentRegisterReq): ResponseEntity<SuccessRes<String>> {
     // TODO Save user Picture with Bucket service
-    val picture = req.picture.name
+    val picture = bucketService.upload(req.picture)
     studentsRepository.save(
       StudentsEntity(
         fullname = req.fullName,
@@ -132,8 +134,8 @@ class AuthService(
     // TODO Save tutor picture with Bucket service
     // TODO Save tutor cv with Bucket service
     // TODO Missing validation when tutor has applied, but hasn't been reviewed
-    val picture = req.picture.originalFilename as String
-    val cv = req.cv.originalFilename as String
+    val picture = bucketService.upload(req.picture)
+    val cv = bucketService.upload(req.cv)
     pendingTutorsRepository.save(
       PendingTutorsEntity(
         socialId = req.socialId,
@@ -156,7 +158,6 @@ class AuthService(
 
   fun refreshAccessToken(): ResponseEntity<SuccessRes<String>> {
     val currentRefreshToken = authHelper.refreshToken()
-    println("This is the refresh token $currentRefreshToken")
     val newAccessToken =
       jwtService.generateAccessToken(
         jwtService.getUserIdFromToken(currentRefreshToken),

@@ -18,7 +18,7 @@ class JwtFilter(private val jwtService: JwtService) : OncePerRequestFilter() {
   ) {
     val accessToken = request.cookies?.find { it.name == "accessToken" }?.value
     val refreshToken = request.cookies?.find { it.name == "refreshToken" }?.value
-    if (refreshToken != null) {
+    if (refreshToken != null && jwtService.validateRefreshToken(refreshToken)) {
       if (accessToken != null && jwtService.validateAccessToken(accessToken)) {
         val userId = jwtService.getUserIdFromToken(accessToken)
         val role = jwtService.getUserRoleFromToken(accessToken)
