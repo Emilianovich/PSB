@@ -90,7 +90,7 @@ CREATE TABLE sessions (
     attendance_marked BOOLEAN DEFAULT FALSE,
     status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE'
         CHECK (status IN ('ACTIVE','CANCELLED','NOT_ACTIVE')),
-    availability_id CHAR(36) NOT NULL,
+    availability_id VARCHAR(25) NOT NULL,
     end_datetime TIMESTAMP NOT NULL,
 
     FOREIGN KEY (availability_id) REFERENCES availability(id),

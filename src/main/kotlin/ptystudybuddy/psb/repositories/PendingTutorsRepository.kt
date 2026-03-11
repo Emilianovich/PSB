@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import ptystudybuddy.psb.entities.PendingTutorsEntity
 
 interface PendingTutorsRepository : JpaRepository<PendingTutorsEntity, String> {
+  fun findAllByApprovedIsNull(): List<PendingTutorsEntity>
+
   fun existsByEmailAndBlacklistedAtIsNotNull(email: String): Boolean
 
   fun existsBySocialIdAndBlacklistedAtIsNotNull(socialId: String): Boolean
