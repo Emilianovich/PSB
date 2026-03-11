@@ -1,5 +1,6 @@
 package ptystudybuddy.psb.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -15,5 +16,6 @@ class SubjectsEntity(
   @Column(nullable = false) val name: String,
   @Column(nullable = false) val description: String,
   @OneToMany(mappedBy = "subject_id")
+  @JsonIgnore
   val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
