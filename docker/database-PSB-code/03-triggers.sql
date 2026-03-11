@@ -164,3 +164,39 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER t_before_insert_availability
+BEFORE INSERT ON availability
+FOR EACH ROW
+BEGIN
+    DECLARE schedule_end TIME;
+    DECLARE msg VARCHAR(255);
+
+    SELECT end_time INTO schedule_end
+    FROM schedules
+    WHERE id = NEW.schedule_id;
+
+    IF schedule_end IS NULL THEN
+        SET msg = CONCAT('Schedule end_time not found for id ', NEW.schedule_id);
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+
+    SET NEW.end_datetime = TIMESTAMP(NEW.date, schedule_end);
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER t_generate_unique_key
+BEFORE INSERT ON availability
+FOR EACH ROW
+BEGIN
+    SET NEW.id = CONCAT(
+        NEW.class_id, '_', NEW.schedule_id, '_', CAST(NEW.date AS CHAR)
+    );
+END$$
+
+DELIMITER ;

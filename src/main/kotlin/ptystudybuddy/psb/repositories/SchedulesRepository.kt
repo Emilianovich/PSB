@@ -10,4 +10,6 @@ interface SchedulesRepository : Repository<SchedulesEntity, String> {
   fun findById(id: String): Optional<SchedulesEntity>
 
   fun findAll(): List<SchedulesEntity>
+
+  fun findAllByIdIn(ids: List<String>): List<SchedulesEntity>
 }

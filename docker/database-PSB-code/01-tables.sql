@@ -71,7 +71,7 @@ CREATE TABLE schedules (
 
 
 CREATE TABLE availability (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id VARCHAR(25) PRIMARY KEY,
     class_id VARCHAR(5) NOT NULL,
     schedule_id CHAR(4) NOT NULL,
     date DATE NOT NULL,

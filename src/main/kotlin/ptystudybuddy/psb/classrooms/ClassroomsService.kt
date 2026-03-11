@@ -14,7 +14,7 @@ class ClassroomsService(val classroomsRepository: ClassroomsRepository) {
   fun getAllClassrooms(): ResponseEntity<SuccessRes<MutableList<ClassroomsEntity>>> {
     val classrooms =
       this.classroomsRepository.findAll().takeIf { it.isNotEmpty() }
-        ?: throw EntityNotFoundException("Classrooms Not Found")
+        ?: throw EntityNotFoundException("No se encontraron salones")
 
     return ResponseEntity.ok(SuccessRes(statusCode = HttpStatus.OK.value(), content = classrooms))
   }
