@@ -16,6 +16,6 @@ class AvailabilityController(val availabilityService: AvailabilityService) {
 
   @PostMapping
   fun createAvailabilitySession(
-    @Valid @RequestBody availabilityData: MutableList<AvailabilityDto>
+    @RequestBody @Valid availabilityData: MutableList<AvailabilityDto>
   ) = this.availabilityService.createAvailability(availabilityData)
 }

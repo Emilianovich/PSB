@@ -20,10 +20,10 @@ class ReviewsService(private val reviewsRepository: ReviewsRepository) {
     )
   }
 
-  fun getAllReviews(): ResponseEntity<SuccessRes<List<ReviewsEntity?>>?> {
+  fun getAllReviews(sessionId: String): ResponseEntity<SuccessRes<List<ReviewsEntity?>>?> {
 
     val reviews =
-      reviewsRepository.findAll().takeIf { it.isNotEmpty() }
+      reviewsRepository.findAllBySessionId(sessionId).takeIf { it.isNotEmpty() }
         ?: throw EntityNotFoundException("No hay retroalimentaciones")
 
     return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), reviews))
