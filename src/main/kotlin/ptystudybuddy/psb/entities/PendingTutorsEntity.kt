@@ -18,6 +18,6 @@ class PendingTutorsEntity(
   @Column(nullable = false) val cv: String,
   @Column(nullable = false, unique = true) val email: String,
   @Column(nullable = false) val password: String,
-  @Column val approved: Boolean? = null,
+  @Column var approved: Boolean? = null,
   @Column(name = "blacklisted_at") val blacklistedAt: LocalDateTime? = null,
 )
