@@ -1,5 +1,6 @@
 package ptystudybuddy.psb.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -14,5 +15,6 @@ class SchedulesEntity(
   @Column(nullable = false, columnDefinition = "TIME") val start_time: LocalTime,
   @Column(nullable = false, columnDefinition = "TIME") val end_time: LocalTime,
   @OneToMany(mappedBy = "schedule_id")
+  @JsonIgnore
   val availability: MutableList<AvailabilityEntity> = mutableListOf(),
 )

@@ -1,5 +1,6 @@
 package ptystudybuddy.psb.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -16,19 +17,21 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "sessions")
 class SessionsEntity(
-  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
-  @Column(nullable = false) val expected_students: Int,
-  @Column val available_slots: Int,
-  @Column val attendance_marked: Boolean? = null,
-  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
-  @ManyToOne
+    @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+    @Column(nullable = false) val expected_students: Int,
+    @Column val available_slots: Int,
+    @Column val attendance_marked: Boolean? = null,
+    @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
+    @ManyToOne
   @JoinColumn(name = "availability_id", nullable = false)
   val availability_id: AvailabilityEntity,
-  @Column(nullable = false, columnDefinition = "TIMESTAMP") val end_datetime: LocalDateTime,
-  @OneToMany(mappedBy = "session_id") val reviews: MutableList<ReviewsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "session_id")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP") val end_datetime: LocalDateTime,
+    @OneToMany(mappedBy = "session_id")   @JsonIgnore val reviews: MutableList<ReviewsEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "session_id")
+    @JsonIgnore
   val inscriptions: MutableList<InscriptionsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "session_id")
+    @OneToMany(mappedBy = "session_id")
+    @JsonIgnore
   val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
 
