@@ -157,11 +157,11 @@
 
 <div>
   <ul>
-    <li>16 number of properties</li>
-    <li>19 number of functions</li>
-    <li>45 number of classes</li>
-    <li>7 number of packages</li>
-    <li>34 number of kt files</li>
+    <li>66 number of properties</li>
+    <li>66 number of functions</li>
+    <li>67 number of classes</li>
+    <li>17 number of packages</li>
+    <li>56 number of kt files</li>
   </ul>
 </div>
 
@@ -170,375 +170,360 @@
 
 <div>
   <ul>
-    <li>845 lines of code (loc)</li>
-    <li>718 source lines of code (sloc)</li>
-    <li>455 logical lines of code (lloc)</li>
-    <li>4 comment lines of code (cloc)</li>
-    <li>35 cyclomatic complexity (mcc)</li>
-    <li>4 cognitive complexity</li>
-    <li>44 number of total code smells</li>
-    <li>0% comment source ratio</li>
-    <li>76 mcc per 1,000 lloc</li>
-    <li>96 code smells per 1,000 lloc</li>
+    <li>1,638 lines of code (loc)</li>
+    <li>1,392 source lines of code (sloc)</li>
+    <li>859 logical lines of code (lloc)</li>
+    <li>16 comment lines of code (cloc)</li>
+    <li>142 cyclomatic complexity (mcc)</li>
+    <li>14 cognitive complexity</li>
+    <li>56 number of total code smells</li>
+    <li>1% comment source ratio</li>
+    <li>165 mcc per 1,000 lloc</li>
+    <li>65 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 44
-  <h3>naming: 35</h3>
+<div>Total: 56
+  <h3>exceptions: 1</h3>
+  <details id="TooGenericExceptionCaught" open="open">
+    <summary class="rule-container"><span class="rule">TooGenericExceptionCaught: 1 </span><span class="description">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span></summary>
+<a href="https://detekt.dev/docs/rules/exceptions#toogenericexceptioncaught">Documentation</a>
+    <ul>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/jwt/JwtService.kt:38:14</span><span class="message">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span>
+        <pre><code><span class="lineno">  35 </span>  private fun parseAllClaims(token: String): Claims? {
+<span class="lineno">  36 </span>    return try {
+<span class="lineno">  37 </span>      Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).payload
+<span class="lineno">  38 </span>    } catch (<span class="error">e: Exception</span>) {
+<span class="lineno">  39 </span>      println(e)
+<span class="lineno">  40 </span>      null
+<span class="lineno">  41 </span>    }
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <h3>naming: 32</h3>
   <details id="ConstructorParameterNaming" open="open">
-    <summary class="rule-container"><span class="rule">ConstructorParameterNaming: 35 </span><span class="description">Constructor parameter names should follow the naming convention set in the projects configuration.</span></summary>
+    <summary class="rule-container"><span class="rule">ConstructorParameterNaming: 32 </span><span class="description">Constructor parameter names should follow the naming convention set in the projects configuration.</span></summary>
 <a href="https://detekt.dev/docs/rules/naming#constructorparameternaming">Documentation</a>
     <ul>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AdminsEntity.kt:16:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  13 </span>    @Id
-<span class="lineno">  14 </span>    @GeneratedValue(strategy = GenerationType.UUID)
-<span class="lineno">  15 </span>    val id: String? = null,
-<span class="lineno">  16 </span>    <span class="error">@Column(nullable = false)</span>
-<span class="lineno">  17 </span><span class="error">    val social_id: String</span>,
-<span class="lineno">  18 </span>    @Column(nullable = false)
-<span class="lineno">  19 </span>    val fullname: String,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AdminsEntity.kt:14:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  11 </span>@Table(name = &quot;admins&quot;)
+<span class="lineno">  12 </span>class AdminsEntity(
+<span class="lineno">  13 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  14 </span>  <span class="error">@Column(nullable = false) val social_id: String</span>,
+<span class="lineno">  15 </span>  @Column(nullable = false) val fullname: String,
+<span class="lineno">  16 </span>  @Column(nullable = false, unique = true) val email: String,
+<span class="lineno">  17 </span>  @Column(nullable = false) val password: String,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:21:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  18 </span>    @Id
-<span class="lineno">  19 </span>    @GeneratedValue(strategy = GenerationType.UUID)
-<span class="lineno">  20 </span>    val id: String? = null,
-<span class="lineno">  21 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  22 </span><span class="error">    @JoinColumn(name = &quot;class_id&quot;, nullable = false)</span>
-<span class="lineno">  23 </span><span class="error">    val class_id: ClassroomsEntity</span>,
-<span class="lineno">  24 </span>    @ManyToOne
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:19:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  16 </span>@Table(name = &quot;availability&quot;)
+<span class="lineno">  17 </span>class AvailabilityEntity(
+<span class="lineno">  18 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  19 </span>  <span class="error">@ManyToOne @JoinColumn(name = &quot;class_id&quot;, nullable = false) val class_id: ClassroomsEntity</span>,
+<span class="lineno">  20 </span>  @ManyToOne @JoinColumn(name = &quot;schedule_id&quot;, nullable = false) val schedule_id: SchedulesEntity,
+<span class="lineno">  21 </span>  @Column(nullable = false) val date: LocalDate,
+<span class="lineno">  22 </span>  @Column val selected: Boolean? = null,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:24:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  21 </span>    @ManyToOne
-<span class="lineno">  22 </span>    @JoinColumn(name = &quot;class_id&quot;, nullable = false)
-<span class="lineno">  23 </span>    val class_id: ClassroomsEntity,
-<span class="lineno">  24 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  25 </span><span class="error">    @JoinColumn(name = &quot;schedule_id&quot;, nullable = false)</span>
-<span class="lineno">  26 </span><span class="error">    val schedule_id: SchedulesEntity</span>,
-<span class="lineno">  27 </span>    @Column(nullable = false)
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:20:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  17 </span>class AvailabilityEntity(
+<span class="lineno">  18 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  19 </span>  @ManyToOne @JoinColumn(name = &quot;class_id&quot;, nullable = false) val class_id: ClassroomsEntity,
+<span class="lineno">  20 </span>  <span class="error">@ManyToOne @JoinColumn(name = &quot;schedule_id&quot;, nullable = false) val schedule_id: SchedulesEntity</span>,
+<span class="lineno">  21 </span>  @Column(nullable = false) val date: LocalDate,
+<span class="lineno">  22 </span>  @Column val selected: Boolean? = null,
+<span class="lineno">  23 </span>  @Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;) val end_datetime: LocalDateTime,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:31:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  28 </span>    val date: LocalDate,
-<span class="lineno">  29 </span>    @Column
-<span class="lineno">  30 </span>    val selected: Boolean? = null,
-<span class="lineno">  31 </span>    <span class="error">@Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;)</span>
-<span class="lineno">  32 </span><span class="error">    val end_datetime: LocalDateTime</span>,
-<span class="lineno">  33 </span>    @OneToMany(mappedBy = &quot;availability_id&quot;)
-<span class="lineno">  34 </span>    val sessions: MutableList&lt;SessionsEntity&gt; = mutableListOf(),
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt:23:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  20 </span>  @ManyToOne @JoinColumn(name = &quot;schedule_id&quot;, nullable = false) val schedule_id: SchedulesEntity,
+<span class="lineno">  21 </span>  @Column(nullable = false) val date: LocalDate,
+<span class="lineno">  22 </span>  @Column val selected: Boolean? = null,
+<span class="lineno">  23 </span>  <span class="error">@Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;) val end_datetime: LocalDateTime</span>,
+<span class="lineno">  24 </span>  @OneToMany(mappedBy = &quot;availability_id&quot;)
+<span class="lineno">  25 </span>  val sessions: MutableList&lt;SessionsEntity&gt; = mutableListOf(),
+<span class="lineno">  26 </span>)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:16:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  13 </span>
-<span class="lineno">  14 </span>@Embeddable
-<span class="lineno">  15 </span>data class InscriptionId(
-<span class="lineno">  16 </span>    <span class="error">val student_id: String</span>,
-<span class="lineno">  17 </span>    val session_id: String,
-<span class="lineno">  18 </span>) : Serializable
-<span class="lineno">  19 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:14:38</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  11 </span>import java.io.Serializable
+<span class="lineno">  12 </span>import java.time.LocalDateTime
+<span class="lineno">  13 </span>
+<span class="lineno">  14 </span>@Embeddable data class InscriptionId(<span class="error">val student_id: String</span>, val session_id: String) : Serializable
+<span class="lineno">  15 </span>
+<span class="lineno">  16 </span>@Entity
+<span class="lineno">  17 </span>@Table(name = &quot;inscriptions&quot;)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:17:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  14 </span>@Embeddable
-<span class="lineno">  15 </span>data class InscriptionId(
-<span class="lineno">  16 </span>    val student_id: String,
-<span class="lineno">  17 </span>    <span class="error">val session_id: String</span>,
-<span class="lineno">  18 </span>) : Serializable
-<span class="lineno">  19 </span>
-<span class="lineno">  20 </span>@Entity
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:14:62</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  11 </span>import java.io.Serializable
+<span class="lineno">  12 </span>import java.time.LocalDateTime
+<span class="lineno">  13 </span>
+<span class="lineno">  14 </span>@Embeddable data class InscriptionId(val student_id: String, <span class="error">val session_id: String</span>) : Serializable
+<span class="lineno">  15 </span>
+<span class="lineno">  16 </span>@Entity
+<span class="lineno">  17 </span>@Table(name = &quot;inscriptions&quot;)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:25:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  22 </span>class InscriptionsEntity(
-<span class="lineno">  23 </span>    @EmbeddedId
-<span class="lineno">  24 </span>    val id: InscriptionId,
-<span class="lineno">  25 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  26 </span><span class="error">    @MapsId(&quot;student_id&quot;)</span>
-<span class="lineno">  27 </span><span class="error">    @JoinColumn(name = &quot;student_id&quot;)</span>
-<span class="lineno">  28 </span><span class="error">    val student_id: StudentsEntity</span>,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:20:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  17 </span>@Table(name = &quot;inscriptions&quot;)
+<span class="lineno">  18 </span>class InscriptionsEntity(
+<span class="lineno">  19 </span>  @EmbeddedId val id: InscriptionId,
+<span class="lineno">  20 </span>  <span class="error">@ManyToOne @MapsId(&quot;student_id&quot;) @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity</span>,
+<span class="lineno">  21 </span>  @ManyToOne @MapsId(&quot;session_id&quot;) @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
+<span class="lineno">  22 </span>  @Column var assisted: Boolean? = null,
+<span class="lineno">  23 </span>  @Column var evaluation_status: Boolean? = null,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:29:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  26 </span>    @MapsId(&quot;student_id&quot;)
-<span class="lineno">  27 </span>    @JoinColumn(name = &quot;student_id&quot;)
-<span class="lineno">  28 </span>    val student_id: StudentsEntity,
-<span class="lineno">  29 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  30 </span><span class="error">    @MapsId(&quot;session_id&quot;)</span>
-<span class="lineno">  31 </span><span class="error">    @JoinColumn(name = &quot;session_id&quot;)</span>
-<span class="lineno">  32 </span><span class="error">    val session_id: SessionsEntity</span>,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:21:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  18 </span>class InscriptionsEntity(
+<span class="lineno">  19 </span>  @EmbeddedId val id: InscriptionId,
+<span class="lineno">  20 </span>  @ManyToOne @MapsId(&quot;student_id&quot;) @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity,
+<span class="lineno">  21 </span>  <span class="error">@ManyToOne @MapsId(&quot;session_id&quot;) @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity</span>,
+<span class="lineno">  22 </span>  @Column var assisted: Boolean? = null,
+<span class="lineno">  23 </span>  @Column var evaluation_status: Boolean? = null,
+<span class="lineno">  24 </span>  @Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:35:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  32 </span>    val session_id: SessionsEntity,
-<span class="lineno">  33 </span>    @Column
-<span class="lineno">  34 </span>    var assisted: Boolean? = null,
-<span class="lineno">  35 </span>    <span class="error">@Column</span>
-<span class="lineno">  36 </span><span class="error">    var evaluation_status: Boolean? = null</span>,
-<span class="lineno">  37 </span>    @Column(columnDefinition = &quot;TIMESTAMP&quot;)
-<span class="lineno">  38 </span>    val date_time: LocalDateTime? = null,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:23:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  20 </span>  @ManyToOne @MapsId(&quot;student_id&quot;) @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity,
+<span class="lineno">  21 </span>  @ManyToOne @MapsId(&quot;session_id&quot;) @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
+<span class="lineno">  22 </span>  @Column var assisted: Boolean? = null,
+<span class="lineno">  23 </span>  <span class="error">@Column var evaluation_status: Boolean? = null</span>,
+<span class="lineno">  24 </span>  @Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null,
+<span class="lineno">  25 </span>)
+<span class="lineno">  26 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:37:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  34 </span>    var assisted: Boolean? = null,
-<span class="lineno">  35 </span>    @Column
-<span class="lineno">  36 </span>    var evaluation_status: Boolean? = null,
-<span class="lineno">  37 </span>    <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;)</span>
-<span class="lineno">  38 </span><span class="error">    val date_time: LocalDateTime? = null</span>,
-<span class="lineno">  39 </span>)
-<span class="lineno">  40 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:24:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  21 </span>  @ManyToOne @MapsId(&quot;session_id&quot;) @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
+<span class="lineno">  22 </span>  @Column var assisted: Boolean? = null,
+<span class="lineno">  23 </span>  @Column var evaluation_status: Boolean? = null,
+<span class="lineno">  24 </span>  <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null</span>,
+<span class="lineno">  25 </span>)
+<span class="lineno">  26 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/PendingTutorsEntity.kt:17:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  14 </span>    @Id
-<span class="lineno">  15 </span>    @GeneratedValue(strategy = GenerationType.UUID)
-<span class="lineno">  16 </span>    val id: String? = null,
-<span class="lineno">  17 </span>    <span class="error">@Column(nullable = false, unique = true)</span>
-<span class="lineno">  18 </span><span class="error">    val social_id: String</span>,
-<span class="lineno">  19 </span>    @Column(nullable = false)
-<span class="lineno">  20 </span>    val fullname: String,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/RefreshTokensEntity.kt:19:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  16 </span>  @Column(nullable = false) val token: String,
+<span class="lineno">  17 </span>  @Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;) val expiry: LocalDateTime,
+<span class="lineno">  18 </span>  @Column(nullable = false) val userId: String,
+<span class="lineno">  19 </span>  <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;) val created_at: LocalDateTime? = null</span>,
+<span class="lineno">  20 </span>  @Column(nullable = false) val role: String,
+<span class="lineno">  21 </span>)
+<span class="lineno">  22 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/PendingTutorsEntity.kt:31:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  28 </span>    val password: String,
-<span class="lineno">  29 </span>    @Column
-<span class="lineno">  30 </span>    val approved: Boolean? = null,
-<span class="lineno">  31 </span>    <span class="error">@Column</span>
-<span class="lineno">  32 </span><span class="error">    val blacklisted_at: LocalDateTime? = null</span>,
-<span class="lineno">  33 </span>)
-<span class="lineno">  34 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:19:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  16 </span>  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int? = null,
+<span class="lineno">  17 </span>  @Column val comment: String,
+<span class="lineno">  18 </span>  @Column(nullable = false) val rating: Int,
+<span class="lineno">  19 </span>  <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null</span>,
+<span class="lineno">  20 </span>  @ManyToOne @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity,
+<span class="lineno">  21 </span>  @ManyToOne @JoinColumn(name = &quot;tutor_id&quot;) val tutor_id: TutorsEntity,
+<span class="lineno">  22 </span>  @ManyToOne @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/RefreshTokensEntity.kt:24:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  21 </span>    val expiry: LocalDateTime,
-<span class="lineno">  22 </span>    @Column(nullable = false)
-<span class="lineno">  23 </span>    val userId: String,
-<span class="lineno">  24 </span>    <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;)</span>
-<span class="lineno">  25 </span><span class="error">    val created_at: LocalDateTime? = null</span>,
-<span class="lineno">  26 </span>    @Column(nullable = false)
-<span class="lineno">  27 </span>    val role: String,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:20:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  17 </span>  @Column val comment: String,
+<span class="lineno">  18 </span>  @Column(nullable = false) val rating: Int,
+<span class="lineno">  19 </span>  @Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null,
+<span class="lineno">  20 </span>  <span class="error">@ManyToOne @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity</span>,
+<span class="lineno">  21 </span>  @ManyToOne @JoinColumn(name = &quot;tutor_id&quot;) val tutor_id: TutorsEntity,
+<span class="lineno">  22 </span>  @ManyToOne @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
+<span class="lineno">  23 </span>)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:23:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  20 </span>    val comment: String,
-<span class="lineno">  21 </span>    @Column(nullable = false)
-<span class="lineno">  22 </span>    val rating: Int,
-<span class="lineno">  23 </span>    <span class="error">@Column(columnDefinition = &quot;TIMESTAMP&quot;)</span>
-<span class="lineno">  24 </span><span class="error">    val date_time: LocalDateTime? = null</span>,
-<span class="lineno">  25 </span>    @ManyToOne
-<span class="lineno">  26 </span>    @JoinColumn(name = &quot;student_id&quot;)
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:21:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  18 </span>  @Column(nullable = false) val rating: Int,
+<span class="lineno">  19 </span>  @Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null,
+<span class="lineno">  20 </span>  @ManyToOne @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity,
+<span class="lineno">  21 </span>  <span class="error">@ManyToOne @JoinColumn(name = &quot;tutor_id&quot;) val tutor_id: TutorsEntity</span>,
+<span class="lineno">  22 </span>  @ManyToOne @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity,
+<span class="lineno">  23 </span>)
+<span class="lineno">  24 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:25:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  22 </span>    val rating: Int,
-<span class="lineno">  23 </span>    @Column(columnDefinition = &quot;TIMESTAMP&quot;)
-<span class="lineno">  24 </span>    val date_time: LocalDateTime? = null,
-<span class="lineno">  25 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  26 </span><span class="error">    @JoinColumn(name = &quot;student_id&quot;)</span>
-<span class="lineno">  27 </span><span class="error">    val student_id: StudentsEntity</span>,
-<span class="lineno">  28 </span>    @ManyToOne
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:22:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  19 </span>  @Column(columnDefinition = &quot;TIMESTAMP&quot;) val date_time: LocalDateTime? = null,
+<span class="lineno">  20 </span>  @ManyToOne @JoinColumn(name = &quot;student_id&quot;) val student_id: StudentsEntity,
+<span class="lineno">  21 </span>  @ManyToOne @JoinColumn(name = &quot;tutor_id&quot;) val tutor_id: TutorsEntity,
+<span class="lineno">  22 </span>  <span class="error">@ManyToOne @JoinColumn(name = &quot;session_id&quot;) val session_id: SessionsEntity</span>,
+<span class="lineno">  23 </span>)
+<span class="lineno">  24 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:28:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  25 </span>    @ManyToOne
-<span class="lineno">  26 </span>    @JoinColumn(name = &quot;student_id&quot;)
-<span class="lineno">  27 </span>    val student_id: StudentsEntity,
-<span class="lineno">  28 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  29 </span><span class="error">    @JoinColumn(name = &quot;tutor_id&quot;)</span>
-<span class="lineno">  30 </span><span class="error">    val tutor_id: TutorsEntity</span>,
-<span class="lineno">  31 </span>    @ManyToOne
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SchedulesEntity.kt:14:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  11 </span>@Table(name = &quot;schedules&quot;)
+<span class="lineno">  12 </span>class SchedulesEntity(
+<span class="lineno">  13 </span>  @Id val id: String,
+<span class="lineno">  14 </span>  <span class="error">@Column(nullable = false, columnDefinition = &quot;TIME&quot;) val start_time: LocalTime</span>,
+<span class="lineno">  15 </span>  @Column(nullable = false, columnDefinition = &quot;TIME&quot;) val end_time: LocalTime,
+<span class="lineno">  16 </span>  @OneToMany(mappedBy = &quot;schedule_id&quot;)
+<span class="lineno">  17 </span>  val availability: MutableList&lt;AvailabilityEntity&gt; = mutableListOf(),
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt:31:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  28 </span>    @ManyToOne
-<span class="lineno">  29 </span>    @JoinColumn(name = &quot;tutor_id&quot;)
-<span class="lineno">  30 </span>    val tutor_id: TutorsEntity,
-<span class="lineno">  31 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  32 </span><span class="error">    @JoinColumn(name = &quot;session_id&quot;)</span>
-<span class="lineno">  33 </span><span class="error">    val session_id: SessionsEntity</span>,
-<span class="lineno">  34 </span>)
-</code></pre>
-      </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SchedulesEntity.kt:15:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SchedulesEntity.kt:15:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
         <pre><code><span class="lineno">  12 </span>class SchedulesEntity(
-<span class="lineno">  13 </span>    @Id
-<span class="lineno">  14 </span>    val id: String,
-<span class="lineno">  15 </span>    <span class="error">@Column(nullable = false, columnDefinition = &quot;TIME&quot;)</span>
-<span class="lineno">  16 </span><span class="error">    val start_time: LocalTime</span>,
-<span class="lineno">  17 </span>    @Column(nullable = false, columnDefinition = &quot;TIME&quot;)
-<span class="lineno">  18 </span>    val end_time: LocalTime,
+<span class="lineno">  13 </span>  @Id val id: String,
+<span class="lineno">  14 </span>  @Column(nullable = false, columnDefinition = &quot;TIME&quot;) val start_time: LocalTime,
+<span class="lineno">  15 </span>  <span class="error">@Column(nullable = false, columnDefinition = &quot;TIME&quot;) val end_time: LocalTime</span>,
+<span class="lineno">  16 </span>  @OneToMany(mappedBy = &quot;schedule_id&quot;)
+<span class="lineno">  17 </span>  val availability: MutableList&lt;AvailabilityEntity&gt; = mutableListOf(),
+<span class="lineno">  18 </span>)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SchedulesEntity.kt:17:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  14 </span>    val id: String,
-<span class="lineno">  15 </span>    @Column(nullable = false, columnDefinition = &quot;TIME&quot;)
-<span class="lineno">  16 </span>    val start_time: LocalTime,
-<span class="lineno">  17 </span>    <span class="error">@Column(nullable = false, columnDefinition = &quot;TIME&quot;)</span>
-<span class="lineno">  18 </span><span class="error">    val end_time: LocalTime</span>,
-<span class="lineno">  19 </span>    @OneToMany(mappedBy = &quot;schedule_id&quot;)
-<span class="lineno">  20 </span>    val availability: MutableList&lt;AvailabilityEntity&gt; = mutableListOf(),
-</code></pre>
-      </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:14:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:14:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
         <pre><code><span class="lineno">  11 </span>
 <span class="lineno">  12 </span>@Embeddable
 <span class="lineno">  13 </span>data class SessionAssignmentId(
-<span class="lineno">  14 </span>    <span class="error">val subject_id: String</span>,
-<span class="lineno">  15 </span>    val tutor_id: String,
-<span class="lineno">  16 </span>    val session_id: String,
+<span class="lineno">  14 </span>  <span class="error">val subject_id: String</span>,
+<span class="lineno">  15 </span>  val tutor_id: String,
+<span class="lineno">  16 </span>  val session_id: String,
 <span class="lineno">  17 </span>) : Serializable
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:15:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:15:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
         <pre><code><span class="lineno">  12 </span>@Embeddable
 <span class="lineno">  13 </span>data class SessionAssignmentId(
-<span class="lineno">  14 </span>    val subject_id: String,
-<span class="lineno">  15 </span>    <span class="error">val tutor_id: String</span>,
-<span class="lineno">  16 </span>    val session_id: String,
+<span class="lineno">  14 </span>  val subject_id: String,
+<span class="lineno">  15 </span>  <span class="error">val tutor_id: String</span>,
+<span class="lineno">  16 </span>  val session_id: String,
 <span class="lineno">  17 </span>) : Serializable
 <span class="lineno">  18 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:16:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:16:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
         <pre><code><span class="lineno">  13 </span>data class SessionAssignmentId(
-<span class="lineno">  14 </span>    val subject_id: String,
-<span class="lineno">  15 </span>    val tutor_id: String,
-<span class="lineno">  16 </span>    <span class="error">val session_id: String</span>,
+<span class="lineno">  14 </span>  val subject_id: String,
+<span class="lineno">  15 </span>  val tutor_id: String,
+<span class="lineno">  16 </span>  <span class="error">val session_id: String</span>,
 <span class="lineno">  17 </span>) : Serializable
 <span class="lineno">  18 </span>
 <span class="lineno">  19 </span>@Entity
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:24:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  21 </span>class SessionAssignmentEntity(
-<span class="lineno">  22 </span>    @EmbeddedId
-<span class="lineno">  23 </span>    val id: SessionAssignmentId,
-<span class="lineno">  24 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  25 </span><span class="error">    @MapsId(&quot;subject_id&quot;)</span>
-<span class="lineno">  26 </span><span class="error">    @JoinColumn(name = &quot;subject_id&quot;, nullable = false)</span>
-<span class="lineno">  27 </span><span class="error">    val subject_id: SubjectsEntity</span>,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:23:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  20 </span>@Table(name = &quot;session_assignment&quot;)
+<span class="lineno">  21 </span>class SessionAssignmentEntity(
+<span class="lineno">  22 </span>  @EmbeddedId val id: SessionAssignmentId,
+<span class="lineno">  23 </span>  <span class="error">@ManyToOne</span>
+<span class="lineno">  24 </span><span class="error">  @MapsId(&quot;subject_id&quot;)</span>
+<span class="lineno">  25 </span><span class="error">  @JoinColumn(name = &quot;subject_id&quot;, nullable = false)</span>
+<span class="lineno">  26 </span><span class="error">  val subject_id: SubjectsEntity</span>,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:28:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  25 </span>    @MapsId(&quot;subject_id&quot;)
-<span class="lineno">  26 </span>    @JoinColumn(name = &quot;subject_id&quot;, nullable = false)
-<span class="lineno">  27 </span>    val subject_id: SubjectsEntity,
-<span class="lineno">  28 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  29 </span><span class="error">    @MapsId(&quot;tutor_id&quot;)</span>
-<span class="lineno">  30 </span><span class="error">    @JoinColumn(name = &quot;tutor_id&quot;, nullable = false)</span>
-<span class="lineno">  31 </span><span class="error">    val tutor_id: TutorsEntity</span>,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:27:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  24 </span>  @MapsId(&quot;subject_id&quot;)
+<span class="lineno">  25 </span>  @JoinColumn(name = &quot;subject_id&quot;, nullable = false)
+<span class="lineno">  26 </span>  val subject_id: SubjectsEntity,
+<span class="lineno">  27 </span>  <span class="error">@ManyToOne</span>
+<span class="lineno">  28 </span><span class="error">  @MapsId(&quot;tutor_id&quot;)</span>
+<span class="lineno">  29 </span><span class="error">  @JoinColumn(name = &quot;tutor_id&quot;, nullable = false)</span>
+<span class="lineno">  30 </span><span class="error">  val tutor_id: TutorsEntity</span>,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:32:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  29 </span>    @MapsId(&quot;tutor_id&quot;)
-<span class="lineno">  30 </span>    @JoinColumn(name = &quot;tutor_id&quot;, nullable = false)
-<span class="lineno">  31 </span>    val tutor_id: TutorsEntity,
-<span class="lineno">  32 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  33 </span><span class="error">    @MapsId(&quot;session_id&quot;)</span>
-<span class="lineno">  34 </span><span class="error">    @JoinColumn(name = &quot;session_id&quot;, nullable = false)</span>
-<span class="lineno">  35 </span><span class="error">    val session_id: SessionsEntity</span>,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:31:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  28 </span>  @MapsId(&quot;tutor_id&quot;)
+<span class="lineno">  29 </span>  @JoinColumn(name = &quot;tutor_id&quot;, nullable = false)
+<span class="lineno">  30 </span>  val tutor_id: TutorsEntity,
+<span class="lineno">  31 </span>  <span class="error">@ManyToOne</span>
+<span class="lineno">  32 </span><span class="error">  @MapsId(&quot;session_id&quot;)</span>
+<span class="lineno">  33 </span><span class="error">  @JoinColumn(name = &quot;session_id&quot;, nullable = false)</span>
+<span class="lineno">  34 </span><span class="error">  val session_id: SessionsEntity</span>,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:22:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  19 </span>    @Id
-<span class="lineno">  20 </span>    @GeneratedValue(strategy = GenerationType.UUID)
-<span class="lineno">  21 </span>    val id: String? = null,
-<span class="lineno">  22 </span>    <span class="error">@Column(nullable = false)</span>
-<span class="lineno">  23 </span><span class="error">    val expected_students: Int</span>,
-<span class="lineno">  24 </span>    @Column
-<span class="lineno">  25 </span>    val available_slots: Int,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:20:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  17 </span>@Table(name = &quot;sessions&quot;)
+<span class="lineno">  18 </span>class SessionsEntity(
+<span class="lineno">  19 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  20 </span>  <span class="error">@Column(nullable = false) val expected_students: Int</span>,
+<span class="lineno">  21 </span>  @Column val available_slots: Int,
+<span class="lineno">  22 </span>  @Column val attendance_marked: Boolean? = null,
+<span class="lineno">  23 </span>  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:24:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  21 </span>    val id: String? = null,
-<span class="lineno">  22 </span>    @Column(nullable = false)
-<span class="lineno">  23 </span>    val expected_students: Int,
-<span class="lineno">  24 </span>    <span class="error">@Column</span>
-<span class="lineno">  25 </span><span class="error">    val available_slots: Int</span>,
-<span class="lineno">  26 </span>    @Column
-<span class="lineno">  27 </span>    val attendance_marked: Boolean? = null,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:21:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  18 </span>class SessionsEntity(
+<span class="lineno">  19 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  20 </span>  @Column(nullable = false) val expected_students: Int,
+<span class="lineno">  21 </span>  <span class="error">@Column val available_slots: Int</span>,
+<span class="lineno">  22 </span>  @Column val attendance_marked: Boolean? = null,
+<span class="lineno">  23 </span>  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
+<span class="lineno">  24 </span>  @ManyToOne
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:26:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  23 </span>    val expected_students: Int,
-<span class="lineno">  24 </span>    @Column
-<span class="lineno">  25 </span>    val available_slots: Int,
-<span class="lineno">  26 </span>    <span class="error">@Column</span>
-<span class="lineno">  27 </span><span class="error">    val attendance_marked: Boolean? = null</span>,
-<span class="lineno">  28 </span>    @Enumerated(EnumType.STRING)
-<span class="lineno">  29 </span>    @Column(nullable = false)
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:22:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  19 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  20 </span>  @Column(nullable = false) val expected_students: Int,
+<span class="lineno">  21 </span>  @Column val available_slots: Int,
+<span class="lineno">  22 </span>  <span class="error">@Column val attendance_marked: Boolean? = null</span>,
+<span class="lineno">  23 </span>  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
+<span class="lineno">  24 </span>  @ManyToOne
+<span class="lineno">  25 </span>  @JoinColumn(name = &quot;availability_id&quot;, nullable = false)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:31:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  28 </span>    @Enumerated(EnumType.STRING)
-<span class="lineno">  29 </span>    @Column(nullable = false)
-<span class="lineno">  30 </span>    val status: SessionStatus? = null,
-<span class="lineno">  31 </span>    <span class="error">@ManyToOne</span>
-<span class="lineno">  32 </span><span class="error">    @JoinColumn(name = &quot;availability_id&quot;, nullable = false)</span>
-<span class="lineno">  33 </span><span class="error">    val availability_id: AvailabilityEntity</span>,
-<span class="lineno">  34 </span>    @Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;)
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:24:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  21 </span>  @Column val available_slots: Int,
+<span class="lineno">  22 </span>  @Column val attendance_marked: Boolean? = null,
+<span class="lineno">  23 </span>  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
+<span class="lineno">  24 </span>  <span class="error">@ManyToOne</span>
+<span class="lineno">  25 </span><span class="error">  @JoinColumn(name = &quot;availability_id&quot;, nullable = false)</span>
+<span class="lineno">  26 </span><span class="error">  val availability_id: AvailabilityEntity</span>,
+<span class="lineno">  27 </span>  @Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;) val end_datetime: LocalDateTime,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:34:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  31 </span>    @ManyToOne
-<span class="lineno">  32 </span>    @JoinColumn(name = &quot;availability_id&quot;, nullable = false)
-<span class="lineno">  33 </span>    val availability_id: AvailabilityEntity,
-<span class="lineno">  34 </span>    <span class="error">@Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;)</span>
-<span class="lineno">  35 </span><span class="error">    val end_datetime: LocalDateTime</span>,
-<span class="lineno">  36 </span>    @OneToMany(mappedBy = &quot;session_id&quot;)
-<span class="lineno">  37 </span>    val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:27:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  24 </span>  @ManyToOne
+<span class="lineno">  25 </span>  @JoinColumn(name = &quot;availability_id&quot;, nullable = false)
+<span class="lineno">  26 </span>  val availability_id: AvailabilityEntity,
+<span class="lineno">  27 </span>  <span class="error">@Column(nullable = false, columnDefinition = &quot;TIMESTAMP&quot;) val end_datetime: LocalDateTime</span>,
+<span class="lineno">  28 </span>  @OneToMany(mappedBy = &quot;session_id&quot;) val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
+<span class="lineno">  29 </span>  @OneToMany(mappedBy = &quot;session_id&quot;)
+<span class="lineno">  30 </span>  val inscriptions: MutableList&lt;InscriptionsEntity&gt; = mutableListOf(),
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:40:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  37 </span>    val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
-<span class="lineno">  38 </span>    @OneToMany(mappedBy = &quot;session_id&quot;)
-<span class="lineno">  39 </span>    val inscriptions: MutableList&lt;InscriptionsEntity&gt; = mutableListOf(),
-<span class="lineno">  40 </span>    <span class="error">@OneToMany(mappedBy = &quot;session_id&quot;)</span>
-<span class="lineno">  41 </span><span class="error">    val sessions_assignment: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
-<span class="lineno">  42 </span>)
-<span class="lineno">  43 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt:31:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  28 </span>  @OneToMany(mappedBy = &quot;session_id&quot;) val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
+<span class="lineno">  29 </span>  @OneToMany(mappedBy = &quot;session_id&quot;)
+<span class="lineno">  30 </span>  val inscriptions: MutableList&lt;InscriptionsEntity&gt; = mutableListOf(),
+<span class="lineno">  31 </span>  <span class="error">@OneToMany(mappedBy = &quot;session_id&quot;)</span>
+<span class="lineno">  32 </span><span class="error">  val sessions_assignment: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
+<span class="lineno">  33 </span>)
+<span class="lineno">  34 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/StudentsEntity.kt:19:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  16 </span>    val id: String? = null,
-<span class="lineno">  17 </span>    @Column(nullable = false)
-<span class="lineno">  18 </span>    val fullname: String,
-<span class="lineno">  19 </span>    <span class="error">@Column(nullable = false)</span>
-<span class="lineno">  20 </span><span class="error">    val social_id: String</span>,
-<span class="lineno">  21 </span>    @Column(nullable = false, unique = true)
-<span class="lineno">  22 </span>    val email: String,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/StudentsEntity.kt:16:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  13 </span>class StudentsEntity(
+<span class="lineno">  14 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  15 </span>  @Column(nullable = false) val fullname: String,
+<span class="lineno">  16 </span>  <span class="error">@Column(nullable = false) val social_id: String</span>,
+<span class="lineno">  17 </span>  @Column(nullable = false, unique = true) val email: String,
+<span class="lineno">  18 </span>  @Column(nullable = false) val password: String,
+<span class="lineno">  19 </span>  @Column(nullable = false) val picture: String,
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SubjectsEntity.kt:21:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  18 </span>    val name: String,
-<span class="lineno">  19 </span>    @Column(nullable = false)
-<span class="lineno">  20 </span>    val description: String,
-<span class="lineno">  21 </span>    <span class="error">@OneToMany(mappedBy = &quot;subject_id&quot;)</span>
-<span class="lineno">  22 </span><span class="error">    val sessions_assignment: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
-<span class="lineno">  23 </span>)
-<span class="lineno">  24 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SubjectsEntity.kt:17:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  14 </span>  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+<span class="lineno">  15 </span>  @Column(nullable = false) val name: String,
+<span class="lineno">  16 </span>  @Column(nullable = false) val description: String,
+<span class="lineno">  17 </span>  <span class="error">@OneToMany(mappedBy = &quot;subject_id&quot;)</span>
+<span class="lineno">  18 </span><span class="error">  val sessions_assignment: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
+<span class="lineno">  19 </span>)
+<span class="lineno">  20 </span>
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/TutorsEntity.kt:18:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  15 </span>    @Id
-<span class="lineno">  16 </span>    @GeneratedValue(strategy = GenerationType.UUID)
-<span class="lineno">  17 </span>    val id: String? = null,
-<span class="lineno">  18 </span>    <span class="error">@Column(nullable = false)</span>
-<span class="lineno">  19 </span><span class="error">    val social_id: String</span>,
-<span class="lineno">  20 </span>    @Column(nullable = false)
-<span class="lineno">  21 </span>    val fullname: String,
-</code></pre>
-      </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/TutorsEntity.kt:35:5</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
-        <pre><code><span class="lineno">  32 </span>    val role: String? = null,
-<span class="lineno">  33 </span>    @OneToMany(mappedBy = &quot;tutor_id&quot;)
-<span class="lineno">  34 </span>    val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
-<span class="lineno">  35 </span>    <span class="error">@OneToMany(mappedBy = &quot;tutor_id&quot;)</span>
-<span class="lineno">  36 </span><span class="error">    val sessions_assignments: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
-<span class="lineno">  37 </span>)
-<span class="lineno">  38 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/TutorsEntity.kt:25:3</span><span class="message">Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*</span>
+        <pre><code><span class="lineno">  22 </span>  @Column(precision = 3, scale = 2) val score: BigDecimal,
+<span class="lineno">  23 </span>  val role: String = &quot;TUTOR&quot;,
+<span class="lineno">  24 </span>  @OneToMany(mappedBy = &quot;tutor_id&quot;) val reviews: MutableList&lt;ReviewsEntity&gt; = mutableListOf(),
+<span class="lineno">  25 </span>  <span class="error">@OneToMany(mappedBy = &quot;tutor_id&quot;)</span>
+<span class="lineno">  26 </span><span class="error">  val sessions_assignments: MutableList&lt;SessionAssignmentEntity&gt; = mutableListOf()</span>,
+<span class="lineno">  27 </span>)
+<span class="lineno">  28 </span>
 </code></pre>
       </li>
     </ul>
@@ -548,50 +533,202 @@
     <summary class="rule-container"><span class="rule">SpreadOperator: 1 </span><span class="description">In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty.</span></summary>
 <a href="https://detekt.dev/docs/rules/performance#spreadoperator">Documentation</a>
     <ul>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/PsbApplication.kt:10:35</span><span class="message">In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty.</span>
-        <pre><code><span class="lineno">   7 </span>class PsbApplication
-<span class="lineno">   8 </span>
-<span class="lineno">   9 </span>fun main(args: Array&lt;String&gt;) {
-<span class="lineno">  10 </span>    runApplication&lt;PsbApplication&gt;<span class="error">(*args)</span>
-<span class="lineno">  11 </span>}
-<span class="lineno">  12 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/PsbApplication.kt:9:33</span><span class="message">In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty.</span>
+        <pre><code><span class="lineno">   6 </span>@SpringBootApplication class PsbApplication
+<span class="lineno">   7 </span>
+<span class="lineno">   8 </span>fun main(args: Array&lt;String&gt;) {
+<span class="lineno">   9 </span>  runApplication&lt;PsbApplication&gt;<span class="error">(*args)</span>
+<span class="lineno">  10 </span>}
+<span class="lineno">  11 </span>
 </code></pre>
       </li>
     </ul>
   </details>
-  <h3>style: 8</h3>
+  <h3>style: 22</h3>
+  <details id="MagicNumber" open="open">
+    <summary class="rule-container"><span class="rule">MagicNumber: 10 </span><span class="description">Report magic numbers. Magic number is a numeric literal that is not defined as a constant and hence it's unclear what the purpose of this number is. It's better to declare such numbers as constants and give them a proper name. By default, -1, 0, 1, and 2 are not considered to be magic numbers.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#magicnumber">Documentation</a>
+    <ul>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/image/ImageValidation.kt:9:19</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class ImageValidation : ConstraintValidator&lt;ImageValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(image: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = <span class="error">5L</span> * 1024 * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^image/(jpe?g|png|gif|bmp|svg\\+xml|webp|ico|tiff|avif)$&quot;)
+<span class="lineno">  11 </span>    // Needed because Spring always creates an empty MultipartFile object
+<span class="lineno">  12 </span>    image.takeUnless { it.isEmpty }
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/image/ImageValidation.kt:9:24</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class ImageValidation : ConstraintValidator&lt;ImageValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(image: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * <span class="error">1024</span> * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^image/(jpe?g|png|gif|bmp|svg\\+xml|webp|ico|tiff|avif)$&quot;)
+<span class="lineno">  11 </span>    // Needed because Spring always creates an empty MultipartFile object
+<span class="lineno">  12 </span>    image.takeUnless { it.isEmpty }
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/image/ImageValidation.kt:9:31</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class ImageValidation : ConstraintValidator&lt;ImageValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(image: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * 1024 * <span class="error">1024</span>
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^image/(jpe?g|png|gif|bmp|svg\\+xml|webp|ico|tiff|avif)$&quot;)
+<span class="lineno">  11 </span>    // Needed because Spring always creates an empty MultipartFile object
+<span class="lineno">  12 </span>    image.takeUnless { it.isEmpty }
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/pdf/PDFValidation.kt:9:19</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class PDFValidation : ConstraintValidator&lt;PDFValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(cv: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = <span class="error">5L</span> * 1024 * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^application/pdf$&quot;)
+<span class="lineno">  11 </span>    println(&quot;Your cv $cv&quot;)
+<span class="lineno">  12 </span>    // Needed because Spring always creates an empty MultipartFile object
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/pdf/PDFValidation.kt:9:24</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class PDFValidation : ConstraintValidator&lt;PDFValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(cv: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * <span class="error">1024</span> * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^application/pdf$&quot;)
+<span class="lineno">  11 </span>    println(&quot;Your cv $cv&quot;)
+<span class="lineno">  12 </span>    // Needed because Spring always creates an empty MultipartFile object
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/pdf/PDFValidation.kt:9:31</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class PDFValidation : ConstraintValidator&lt;PDFValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun isValid(cv: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * 1024 * <span class="error">1024</span>
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^application/pdf$&quot;)
+<span class="lineno">  11 </span>    println(&quot;Your cv $cv&quot;)
+<span class="lineno">  12 </span>    // Needed because Spring always creates an empty MultipartFile object
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:97:18</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">  94 </span>        isHttpOnly = true
+<span class="lineno">  95 </span>        secure = false
+<span class="lineno">  96 </span>        path = &quot;/&quot;
+<span class="lineno">  97 </span>        maxAge = <span class="error">120</span>
+<span class="lineno">  98 </span>      }
+<span class="lineno">  99 </span>    )
+<span class="lineno"> 100 </span>    res.addCookie(
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:105:18</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno"> 102 </span>        isHttpOnly = true
+<span class="lineno"> 103 </span>        secure = false
+<span class="lineno"> 104 </span>        path = &quot;/&quot;
+<span class="lineno"> 105 </span>        maxAge = <span class="error">604800</span>
+<span class="lineno"> 106 </span>      }
+<span class="lineno"> 107 </span>    )
+<span class="lineno"> 108 </span>  }
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:170:18</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno"> 167 </span>        isHttpOnly = true
+<span class="lineno"> 168 </span>        secure = false
+<span class="lineno"> 169 </span>        path = &quot;/&quot;
+<span class="lineno"> 170 </span>        maxAge = <span class="error">120</span>
+<span class="lineno"> 171 </span>      }
+<span class="lineno"> 172 </span>    )
+<span class="lineno"> 173 </span>    return ResponseEntity.ok(
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/jwt/JwtService.kt:19:46</span><span class="message">This expression contains a magic number. Consider defining it to a well named constant.</span>
+        <pre><code><span class="lineno">  16 </span>  private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(rawKey))
+<span class="lineno">  17 </span>
+<span class="lineno">  18 </span>  private val accessTokenValidity = Duration.ofMinutes(2).toMillis()
+<span class="lineno">  19 </span>  val refreshTokenValidity = Duration.ofDays(<span class="error">7</span>).toMillis()
+<span class="lineno">  20 </span>
+<span class="lineno">  21 </span>  private fun generateToken(userId: String, type: String, expiry: Long, role: String): String {
+<span class="lineno">  22 </span>    val now = Date()
+</code></pre>
+      </li>
+    </ul>
+  </details>
   <details id="MaxLineLength" open="open">
-    <summary class="rule-container"><span class="rule">MaxLineLength: 3 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
+    <summary class="rule-container"><span class="rule">MaxLineLength: 1 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
 <a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
     <ul>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/email/SendGridService.kt:70:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  67 </span>                ),
-<span class="lineno">  68 </span>            )
-<span class="lineno">  69 </span>        } else {
-<span class="lineno">  70 </span><span class="error">            val mapForDisapproval = mapOf(&quot;tutor_name&quot; to fullName, &quot;today_date&quot; to DateAndTimeHelper.formatDate(LocalDate.now()))</span>
-<span class="lineno">  71 </span>            sendEmailRequest(
-<span class="lineno">  72 </span>                emailBuilder(
-<span class="lineno">  73 </span>                    TemplateId.DISAPPROVED_TUTOR,
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:152:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
+        <pre><code><span class="lineno"> 149 </span>        SuccessRes(
+<span class="lineno"> 150 </span>          statusCode = HttpStatus.CREATED.value(),
+<span class="lineno"> 151 </span>          content =
+<span class="lineno"> 152 </span><span class="error">            &quot;${req.fullName}, tu solicitud será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión&quot;,</span>
+<span class="lineno"> 153 </span>        )
+<span class="lineno"> 154 </span>      )
+<span class="lineno"> 155 </span>  }
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt:18:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  15 </span>class GlobalExceptionHandler {
-<span class="lineno">  16 </span>    // Status Code 400 when DTO validation fails
-<span class="lineno">  17 </span>    @ExceptionHandler(MethodArgumentNotValidException::class)
-<span class="lineno">  18 </span><span class="error">    fun handleBadRequest(e: MethodArgumentNotValidException): ResponseEntity&lt;ExceptionRes&lt;List&lt;Map&lt;String, String?&gt;&gt;&gt;?&gt;? {</span>
-<span class="lineno">  19 </span>        val errors = e.bindingResult.fieldErrors.map {
-<span class="lineno">  20 </span>            mapOf(
-<span class="lineno">  21 </span>                &quot;field&quot; to it.field,
+    </ul>
+  </details>
+  <details id="ReturnCount" open="open">
+    <summary class="rule-container"><span class="rule">ReturnCount: 6 </span><span class="description">Restrict the number of return statements in methods.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#returncount">Documentation</a>
+    <ul>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/image/ImageValidation.kt:8:16</span><span class="message">Function isValid has 4 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">   5 </span>import org.springframework.web.multipart.MultipartFile
+<span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class ImageValidation : ConstraintValidator&lt;ImageValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun <span class="error">isValid</span>(image: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * 1024 * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^image/(jpe?g|png|gif|bmp|svg\\+xml|webp|ico|tiff|avif)$&quot;)
+<span class="lineno">  11 </span>    // Needed because Spring always creates an empty MultipartFile object
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt:51:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  48 </span>            else -&gt; HttpStatus.BAD_REQUEST
-<span class="lineno">  49 </span>        }
-<span class="lineno">  50 </span>        return ResponseEntity.status(status.value())
-<span class="lineno">  51 </span><span class="error">            .body(ExceptionRes(statusCode = status.value(), errors = ex.message ?: &quot;Un error del tipo ${status.name} ocurrió&quot;))</span>
-<span class="lineno">  52 </span>    }
-<span class="lineno">  53 </span>
-<span class="lineno">  54 </span>    // Status Code 415
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/pdf/PDFValidation.kt:8:16</span><span class="message">Function isValid has 4 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">   5 </span>import org.springframework.web.multipart.MultipartFile
+<span class="lineno">   6 </span>
+<span class="lineno">   7 </span>class PDFValidation : ConstraintValidator&lt;PDFValidator, MultipartFile&gt; {
+<span class="lineno">   8 </span>  override fun <span class="error">isValid</span>(cv: MultipartFile, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">   9 </span>    val maxSize = 5L * 1024 * 1024
+<span class="lineno">  10 </span>    val contentType = Regex(&quot;^application/pdf$&quot;)
+<span class="lineno">  11 </span>    println(&quot;Your cv $cv&quot;)
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/tutors/exists/email/TutorEmailExistsValidation.kt:12:16</span><span class="message">Function isValid has 3 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">   9 </span>  private val pendingTutorsRepository: PendingTutorsRepository,
+<span class="lineno">  10 </span>  private val tutorsRepository: TutorsRepository,
+<span class="lineno">  11 </span>) : ConstraintValidator&lt;TutorEmailExistsValidator, String&gt; {
+<span class="lineno">  12 </span>  override fun <span class="error">isValid</span>(email: String, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">  13 </span>    email.takeUnless { pendingTutorsRepository.existsByEmailAndBlacklistedAtIsNotNull(it) }
+<span class="lineno">  14 </span>      ?: run {
+<span class="lineno">  15 </span>        context.disableDefaultConstraintViolation()
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/tutors/exists/socialId/TutorSocialIdExistsValidation.kt:12:16</span><span class="message">Function isValid has 3 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">   9 </span>  private val pendingTutorsRepository: PendingTutorsRepository,
+<span class="lineno">  10 </span>  private val tutorsRepository: TutorsRepository,
+<span class="lineno">  11 </span>) : ConstraintValidator&lt;TutorSocialIdExistsValidator, String&gt; {
+<span class="lineno">  12 </span>  override fun <span class="error">isValid</span>(socialId: String, context: ConstraintValidatorContext): Boolean {
+<span class="lineno">  13 </span>    socialId.takeUnless { pendingTutorsRepository.existsBySocialIdAndBlacklistedAtIsNotNull(it) }
+<span class="lineno">  14 </span>      ?: run {
+<span class="lineno">  15 </span>        context.disableDefaultConstraintViolation()
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/jwt/JwtService.kt:52:7</span><span class="message">Function validateAccessToken has 3 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">  49 </span>    return generateToken(userId, &quot;refresh&quot;, refreshTokenValidity, role)
+<span class="lineno">  50 </span>  }
+<span class="lineno">  51 </span>
+<span class="lineno">  52 </span>  fun <span class="error">validateAccessToken</span>(token: String): Boolean {
+<span class="lineno">  53 </span>    val claims = parseAllClaims(token) ?: return false
+<span class="lineno">  54 </span>    val tokenType = claims[&quot;type&quot;] as? String ?: return false
+<span class="lineno">  55 </span>    return tokenType == &quot;access&quot;
+</code></pre>
+      </li>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/jwt/JwtService.kt:58:7</span><span class="message">Function validateRefreshToken has 3 return statements which exceeds the limit of 2.</span>
+        <pre><code><span class="lineno">  55 </span>    return tokenType == &quot;access&quot;
+<span class="lineno">  56 </span>  }
+<span class="lineno">  57 </span>
+<span class="lineno">  58 </span>  fun <span class="error">validateRefreshToken</span>(token: String): Boolean {
+<span class="lineno">  59 </span>    val claims = parseAllClaims(token) ?: return false
+<span class="lineno">  60 </span>    val tokenType = claims[&quot;type&quot;] as? String ?: return false
+<span class="lineno">  61 </span>    return tokenType == &quot;refresh&quot;
 </code></pre>
       </li>
     </ul>
@@ -600,14 +737,14 @@
     <summary class="rule-container"><span class="rule">SerialVersionUIDInSerializableClass: 2 </span><span class="description">A class which implements the Serializable interface does not define a correct serialVersionUID field. The serialVersionUID field should be a private constant long value inside a companion object.</span></summary>
 <a href="https://detekt.dev/docs/rules/style#serialversionuidinserializableclass">Documentation</a>
     <ul>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:15:12</span><span class="message">The class InscriptionId implements the `Serializable` interface and should thus define a `serialVersionUID`.</span>
-        <pre><code><span class="lineno">  12 </span>import java.time.LocalDateTime
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt:14:24</span><span class="message">The class InscriptionId implements the `Serializable` interface and should thus define a `serialVersionUID`.</span>
+        <pre><code><span class="lineno">  11 </span>import java.io.Serializable
+<span class="lineno">  12 </span>import java.time.LocalDateTime
 <span class="lineno">  13 </span>
-<span class="lineno">  14 </span>@Embeddable
-<span class="lineno">  15 </span>data class <span class="error">InscriptionId</span>(
-<span class="lineno">  16 </span>    val student_id: String,
-<span class="lineno">  17 </span>    val session_id: String,
-<span class="lineno">  18 </span>) : Serializable
+<span class="lineno">  14 </span>@Embeddable data class <span class="error">InscriptionId</span>(val student_id: String, val session_id: String) : Serializable
+<span class="lineno">  15 </span>
+<span class="lineno">  16 </span>@Entity
+<span class="lineno">  17 </span>@Table(name = &quot;inscriptions&quot;)
 </code></pre>
       </li>
       <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt:13:12</span><span class="message">The class SessionAssignmentId implements the `Serializable` interface and should thus define a `serialVersionUID`.</span>
@@ -615,45 +752,45 @@
 <span class="lineno">  11 </span>
 <span class="lineno">  12 </span>@Embeddable
 <span class="lineno">  13 </span>data class <span class="error">SessionAssignmentId</span>(
-<span class="lineno">  14 </span>    val subject_id: String,
-<span class="lineno">  15 </span>    val tutor_id: String,
-<span class="lineno">  16 </span>    val session_id: String,
+<span class="lineno">  14 </span>  val subject_id: String,
+<span class="lineno">  15 </span>  val tutor_id: String,
+<span class="lineno">  16 </span>  val session_id: String,
 </code></pre>
       </li>
     </ul>
   </details>
-  <details id="WildcardImport" open="open">
-    <summary class="rule-container"><span class="rule">WildcardImport: 3 </span><span class="description">Wildcard imports should be replaced with imports using fully qualified class names. Wildcard imports can lead to naming conflicts. A library update can introduce naming clashes with your classes which results in compilation errors.</span></summary>
-<a href="https://detekt.dev/docs/rules/style#wildcardimport">Documentation</a>
+  <details id="ThrowsCount" open="open">
+    <summary class="rule-container"><span class="rule">ThrowsCount: 3 </span><span class="description">Restrict the number of throw statements in methods.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#throwscount">Documentation</a>
     <ul>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt:5:1</span><span class="message">org.springframework.http.* is a wildcard import. Replace it with fully qualified imports.</span>
-        <pre><code><span class="lineno">   2 </span>
-<span class="lineno">   3 </span>import jakarta.persistence.EntityNotFoundException
-<span class="lineno">   4 </span>import org.springframework.dao.DataIntegrityViolationException
-<span class="lineno">   5 </span><span class="error">import org.springframework.http.*</span>
-<span class="lineno">   6 </span>import org.springframework.http.converter.HttpMessageNotReadableException
-<span class="lineno">   7 </span>import org.springframework.web.HttpMediaTypeNotSupportedException
-<span class="lineno">   8 </span>import org.springframework.web.bind.*
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:42:7</span><span class="message">Too many throw statements in the function login. The maximum number of allowed throw statements is 2.</span>
+        <pre><code><span class="lineno">  39 </span>  private val authHelper: AuthHelper,
+<span class="lineno">  40 </span>  private val refreshTokensRepository: RefreshTokensRepository,
+<span class="lineno">  41 </span>) {
+<span class="lineno">  42 </span>  fun <span class="error">login</span>(req: LoginReq): ResponseEntity&lt;SuccessRes&lt;String&gt;&gt; {
+<span class="lineno">  43 </span>    val adminRegex = Regex(&quot;^[a-zA-Z0-9._%+\\-]+@ptystudybuddy\\.dev$&quot;)
+<span class="lineno">  44 </span>    if (req.email.matches(adminRegex)) {
+<span class="lineno">  45 </span>      val admin =
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt:8:1</span><span class="message">org.springframework.web.bind.* is a wildcard import. Replace it with fully qualified imports.</span>
-        <pre><code><span class="lineno">   5 </span>import org.springframework.http.*
-<span class="lineno">   6 </span>import org.springframework.http.converter.HttpMessageNotReadableException
-<span class="lineno">   7 </span>import org.springframework.web.HttpMediaTypeNotSupportedException
-<span class="lineno">   8 </span><span class="error">import org.springframework.web.bind.*</span>
-<span class="lineno">   9 </span>import org.springframework.web.bind.annotation.*
-<span class="lineno">  10 </span>import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
-<span class="lineno">  11 </span>import ptystudybuddy.psb.presentation.ExceptionRes
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:76:7</span><span class="message">Too many throw statements in the function studentLogin. The maximum number of allowed throw statements is 2.</span>
+        <pre><code><span class="lineno">  73 </span>    )
+<span class="lineno">  74 </span>  }
+<span class="lineno">  75 </span>
+<span class="lineno">  76 </span>  fun <span class="error">studentLogin</span>(req: LoginReq): ResponseEntity&lt;SuccessRes&lt;String&gt;&gt; {
+<span class="lineno">  77 </span>    val student =
+<span class="lineno">  78 </span>      studentsRepository.findByEmail(req.email)
+<span class="lineno">  79 </span>        ?: throw AccessDeniedException(&quot;Correo o contraseña incorrectos&quot;)
 </code></pre>
       </li>
-      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt:9:1</span><span class="message">org.springframework.web.bind.annotation.* is a wildcard import. Replace it with fully qualified imports.</span>
-        <pre><code><span class="lineno">   6 </span>import org.springframework.http.converter.HttpMessageNotReadableException
-<span class="lineno">   7 </span>import org.springframework.web.HttpMediaTypeNotSupportedException
-<span class="lineno">   8 </span>import org.springframework.web.bind.*
-<span class="lineno">   9 </span><span class="error">import org.springframework.web.bind.annotation.*</span>
-<span class="lineno">  10 </span>import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
-<span class="lineno">  11 </span>import ptystudybuddy.psb.presentation.ExceptionRes
-<span class="lineno">  12 </span>
+      <li><span class="location">/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt:209:15</span><span class="message">Too many throw statements in the function storeRefreshToken. The maximum number of allowed throw statements is 2.</span>
+        <pre><code><span class="lineno"> 206 </span>    return Base64.getEncoder().encodeToString(hashBytes)
+<span class="lineno"> 207 </span>  }
+<span class="lineno"> 208 </span>
+<span class="lineno"> 209 </span>  private fun <span class="error">storeRefreshToken</span>(rawToken: String) {
+<span class="lineno"> 210 </span>    val userRole = jwtService.getUserRoleFromToken(rawToken)
+<span class="lineno"> 211 </span>    val userId = jwtService.getUserIdFromToken(rawToken)
+<span class="lineno"> 212 </span>
 </code></pre>
       </li>
     </ul>
@@ -661,7 +798,7 @@
 </div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-03-10 05:38:10 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-03-11 02:16:42 UTC.
 
 </body>
 </html>

@@ -12,6 +12,13 @@ complexity:
     active: true
     functionThreshold: 8
     constructorThreshold: 15
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 15
+    thresholdInClasses: 15
+    thresholdInInterfaces: 10
+    thresholdInObjects: 10
+    thresholdInEnums: 5
 
   CyclomaticComplexMethod:
     active: true
@@ -64,5 +71,4 @@ style:
     active: true
 
   MagicNumber:
-    active: true
-    ignoreNumbers: ['-1', '0', '1', '2', '3', '30']
+    active: false
