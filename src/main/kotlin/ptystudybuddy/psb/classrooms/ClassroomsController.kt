@@ -15,6 +15,6 @@ class ClassroomsController(val classroomsService: ClassroomsService) {
   @GetMapping fun getAllClassrooms() = this.classroomsService.getAllClassrooms()
 
   @PostMapping
-  fun createClassroom(@Valid @RequestBody classroomData: MutableList<CreateClassroomDto>) =
+  fun createClassroom(@Valid @RequestBody classroomData: MutableList<ClassroomDto>) =
     this.classroomsService.createClassroom(classroomData)
 }

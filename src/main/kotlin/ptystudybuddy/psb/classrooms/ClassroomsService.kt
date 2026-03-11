@@ -20,7 +20,7 @@ class ClassroomsService(val classroomsRepository: ClassroomsRepository) {
   }
 
   fun createClassroom(
-    classroomData: MutableList<CreateClassroomDto>
+    classroomData: MutableList<ClassroomDto>
   ): ResponseEntity<SuccessRes<String>> {
 
     this.classroomsRepository

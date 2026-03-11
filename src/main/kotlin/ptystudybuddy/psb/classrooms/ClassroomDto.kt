@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-data class CreateClassroomDto(
+data class ClassroomDto(
   @field:NotBlank(message = "El id del salón es requerido")
   @field:Size(max = 5)
   @field:Pattern(regexp = "^[1-4]-[0-9]{3}$")
