@@ -65,8 +65,8 @@ CREATE TABLE schedules (
     end_time TIME NOT NULL UNIQUE,
     CHECK (end_time > start_time),
     CHECK (
-        TIMEDIFF(start_time, end_time) BETWEEN 1 AND 2
-    )
+        TIMESTAMPDIFF(HOUR, start_time, end_time) BETWEEN 1 AND 3
+        )
 );
 
 
@@ -169,14 +169,14 @@ CREATE TABLE inscriptions (
 );
 
 INSERT INTO schedules (id, start_time, end_time) VALUES
- ('S001', '07:00:00', '09:00:00'),
- ('S002', '09:05:00', '11:05:00'),
- ('S003', '11:10:00', '13:10:00'),
- ('S004', '13:15:00', '15:15:00'),
- ('S005', '15:20:00', '17:20:00'),
- ('S006', '17:25:00', '19:25:00'),
- ('S007', '19:30:00', '21:30:00');
+                                                     ('S001', '07:00:00', '09:00:00'),
+                                                     ('S002', '09:05:00', '11:05:00'),
+                                                     ('S003', '11:10:00', '13:10:00'),
+                                                     ('S004', '13:15:00', '15:15:00'),
+                                                     ('S005', '15:20:00', '17:20:00'),
+                                                     ('S006', '17:25:00', '19:25:00'),
+                                                     ('S007', '19:30:00', '21:30:00');
 
 INSERT INTO admins (social_id, fullname, email, password) VALUES
-  ('8-1234-56789', 'Steven Ampie', 'steven.ampie@ptystudybuddy.dev', '$2a$12$rAruzY1SvgKlAUrAovZcPu0cRQnfcvfh1wWkbZa4PBP84FQgj2UZ.'),
-  ('8-1022-970', 'Emiola Fagbemi', 'emiola.fagbemi@ptystudybuddy.dev', '$2a$12$qsBZYAstUkNY.ymxM7wpAeVsVexs3PJL7MmWbigzxx1Nm3tCXsU6a');
+                                                              ('8-1234-56789', 'Steven Ampie', 'steven.ampie@ptystudybuddy.dev', '$2a$12$rAruzY1SvgKlAUrAovZcPu0cRQnfcvfh1wWkbZa4PBP84FQgj2UZ.'),
+                                                              ('8-1022-970', 'Emiola Fagbemi', 'emiola.fagbemi@ptystudybuddy.dev', '$2a$12$HYv7j3MSq2C76PVD0IjgE.gFjBp9Q7bji.4KybKDLp8ns1vVwYsZO');

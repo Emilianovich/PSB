@@ -11,13 +11,9 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "subjects")
 class SubjectsEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: String? = null,
-    @Column(nullable = false)
-    val name: String,
-    @Column(nullable = false)
-    val description: String,
-    @OneToMany(mappedBy = "subject_id")
-    val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
+  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
+  @Column(nullable = false) val name: String,
+  @Column(nullable = false) val description: String,
+  @OneToMany(mappedBy = "subject_id")
+  val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )

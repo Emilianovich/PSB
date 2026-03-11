@@ -6,10 +6,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class SendGridConfig(
-    @Value("\${sendgrid.key}")
-    private val key: String,
-) {
-    @Bean
-    fun sendGridClient(): SendGrid = SendGrid(key)
+class SendGridConfig(@Value("\${sendgrid.key}") private val key: String) {
+  @Bean fun sendGridClient(): SendGrid = SendGrid(key)
 }

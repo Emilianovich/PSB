@@ -186,9 +186,10 @@
 				<version>2.44.0</version>
 				<configuration>
 					<kotlin>
-						<ktlint>
-							<version>1.1.1</version>
-						</ktlint>
+						<ktfmt>
+							<version>0.51</version>
+							<style>GOOGLE</style>
+						</ktfmt>
 					</kotlin>
 				</configuration>
 				<executions>

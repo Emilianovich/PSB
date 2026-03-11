@@ -1,77 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="4.3">
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/jwt/JwtService.kt">
+	<error line="38" column="14" severity="warning" message="The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled." source="detekt.TooGenericExceptionCaught" />
+	<error line="52" column="7" severity="warning" message="Function validateAccessToken has 3 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+	<error line="58" column="7" severity="warning" message="Function validateRefreshToken has 3 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+	<error line="19" column="46" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+</file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/RefreshTokensEntity.kt">
-	<error line="24" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="19" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionsEntity.kt">
-	<error line="22" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="24" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="26" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="31" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="34" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="40" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="20" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="21" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="22" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="24" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="27" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="31" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/InscriptionsEntity.kt">
-	<error line="16" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="17" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="25" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="29" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="35" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="37" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="15" column="12" severity="warning" message="The class InscriptionId implements the `Serializable` interface and should thus define a `serialVersionUID`." source="detekt.SerialVersionUIDInSerializableClass" />
+	<error line="14" column="38" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="14" column="62" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="20" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="21" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="23" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="24" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="14" column="24" severity="warning" message="The class InscriptionId implements the `Serializable` interface and should thus define a `serialVersionUID`." source="detekt.SerialVersionUIDInSerializableClass" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AvailabilityEntity.kt">
-	<error line="21" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="24" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="31" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="19" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="20" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="23" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/ReviewsEntity.kt">
-	<error line="23" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="25" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="28" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="31" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="19" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="20" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="21" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="22" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/TutorsEntity.kt">
-	<error line="18" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="35" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="25" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SchedulesEntity.kt">
-	<error line="15" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="17" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="14" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="15" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SubjectsEntity.kt">
-	<error line="21" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="17" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/StudentsEntity.kt">
-	<error line="19" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-</file>
-<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/PendingTutorsEntity.kt">
-	<error line="17" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="31" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="16" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/SessionAssignmentEntity.kt">
-	<error line="14" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="15" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="16" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="24" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="28" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
-	<error line="32" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="14" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="15" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="16" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="23" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="27" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="31" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 	<error line="13" column="12" severity="warning" message="The class SessionAssignmentId implements the `Serializable` interface and should thus define a `serialVersionUID`." source="detekt.SerialVersionUIDInSerializableClass" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/entities/AdminsEntity.kt">
-	<error line="16" column="5" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
+	<error line="14" column="3" severity="warning" message="Constructor parameter names should match the pattern: [a-z][A-Za-z0-9]*" source="detekt.ConstructorParameterNaming" />
 </file>
 <file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/PsbApplication.kt">
-	<error line="10" column="35" severity="warning" message="In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty." source="detekt.SpreadOperator" />
+	<error line="9" column="33" severity="warning" message="In most cases using a spread operator causes a full copy of the array to be created before calling a method. This may result in a performance penalty." source="detekt.SpreadOperator" />
 </file>
-<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/exceptions/GlobalExceptionHandler.kt">
-	<error line="5" column="1" severity="warning" message="org.springframework.http.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
-	<error line="8" column="1" severity="warning" message="org.springframework.web.bind.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
-	<error line="9" column="1" severity="warning" message="org.springframework.web.bind.annotation.* is a wildcard import. Replace it with fully qualified imports." source="detekt.WildcardImport" />
-	<error line="18" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
-	<error line="51" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/auth/AuthService.kt">
+	<error line="42" column="7" severity="warning" message="Too many throw statements in the function login. The maximum number of allowed throw statements is 2." source="detekt.ThrowsCount" />
+	<error line="76" column="7" severity="warning" message="Too many throw statements in the function studentLogin. The maximum number of allowed throw statements is 2." source="detekt.ThrowsCount" />
+	<error line="209" column="15" severity="warning" message="Too many throw statements in the function storeRefreshToken. The maximum number of allowed throw statements is 2." source="detekt.ThrowsCount" />
+	<error line="152" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
+	<error line="97" column="18" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="105" column="18" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="170" column="18" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
 </file>
-<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/email/SendGridService.kt">
-	<error line="70" column="1" severity="warning" message="Line detected, which is longer than the defined maximum line length in the code style." source="detekt.MaxLineLength" />
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/tutors/exists/socialId/TutorSocialIdExistsValidation.kt">
+	<error line="12" column="16" severity="warning" message="Function isValid has 3 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+</file>
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/tutors/exists/email/TutorEmailExistsValidation.kt">
+	<error line="12" column="16" severity="warning" message="Function isValid has 3 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+</file>
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/pdf/PDFValidation.kt">
+	<error line="8" column="16" severity="warning" message="Function isValid has 4 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+	<error line="9" column="19" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="9" column="24" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="9" column="31" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+</file>
+<file name="/Users/emiola/Downloads/psb/src/main/kotlin/ptystudybuddy/psb/annotations/files/image/ImageValidation.kt">
+	<error line="8" column="16" severity="warning" message="Function isValid has 4 return statements which exceeds the limit of 2." source="detekt.ReturnCount" />
+	<error line="9" column="19" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="9" column="24" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
+	<error line="9" column="31" severity="warning" message="This expression contains a magic number. Consider defining it to a well named constant." source="detekt.MagicNumber" />
 </file>
 </checkstyle>
