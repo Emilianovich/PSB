@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import ptystudybuddy.psb.entities.AvailabilityEntity
 import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
+import ptystudybuddy.psb.helpers.DateAndTimeHelper
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.AvailabilityRepository
 import ptystudybuddy.psb.repositories.ClassroomsRepository
@@ -20,7 +21,7 @@ class AvailabilityService(
   val schedulesRepository: SchedulesRepository,
 ) {
 
-  fun getAllAvailabilities(): ResponseEntity<SuccessRes<List<AvailabilityDto>>> {
+  fun getAllAvailabilities(): ResponseEntity<SuccessRes<List<AvailabilityRes>>> {
 
     val availabilityBlocks =
       availabilityRepository.findAll().takeIf { it.isNotEmpty() }
@@ -68,7 +69,7 @@ class AvailabilityService(
       ?.let { it ->
         throw DataIntegrityViolationException(
           "Ya existe una disponibilidad en ${it.map {
-                            "(Salón: ${it.class_id.id} Horario: ${it.schedule_id.id} Fecha: ${it.date})" }}"
+                            "(Salón: ${it.classId.id} Horario: ${it.scheduleId.id} Fecha: ${it.date})" }}"
         )
       }
 
@@ -83,9 +84,10 @@ class AvailabilityService(
 
         AvailabilityEntity(
           id = "${dto.class_id}_${dto.schedule_id}_${dto.date}",
-          class_id = classroom,
-          schedule_id = schedule,
+          classId = classroom,
+          scheduleId = schedule,
           date = dto.date,
+          endDatetime = DateAndTimeHelper.createDateTime(dto.date, schedule.endTime),
         )
       }
 

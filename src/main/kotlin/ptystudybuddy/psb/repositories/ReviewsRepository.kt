@@ -6,6 +6,6 @@ import ptystudybuddy.psb.entities.ReviewsEntity
 
 interface ReviewsRepository : JpaRepository<ReviewsEntity, Int> {
 
-  @Query("SELECT s FROM ReviewsEntity s WHERE s.session_id.id = :sessionId")
+  @Query("SELECT s FROM ReviewsEntity s WHERE s.sessionId.id = :sessionId")
   fun findAllBySessionId(sessionId: String): List<ReviewsEntity>
 }

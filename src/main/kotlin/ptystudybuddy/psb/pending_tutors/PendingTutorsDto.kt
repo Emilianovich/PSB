@@ -9,6 +9,7 @@ data class PendingTutorsApprovalDto(
 )
 
 data class PendingTutorsResponseDto(
+  @field:NotBlank val id: String,
   @field:NotBlank val social_id: String,
   @field:NotBlank val fullName: String,
   @field:NotBlank val picture: String,

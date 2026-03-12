@@ -12,7 +12,7 @@ import jakarta.persistence.Table
 class ClassroomsEntity(
   @Id val id: String,
   @Column(nullable = false) val location: String,
-  @OneToMany(mappedBy = "class_id")
+  @OneToMany(mappedBy = "classId")
   @JsonIgnore
   val availability: MutableList<AvailabilityEntity> = mutableListOf(),
 )

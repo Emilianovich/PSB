@@ -14,15 +14,15 @@ import jakarta.persistence.Table
 class StudentsEntity(
   @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
   @Column(nullable = false) val fullname: String,
-  @Column(nullable = false) val social_id: String,
+  @Column(nullable = false, name = "social_id") val socialId: String,
   @Column(nullable = false, unique = true) val email: String,
   @Column(nullable = false) val password: String,
   @Column(nullable = false) val picture: String,
   val role: String = "STUDENT",
-  @OneToMany(mappedBy = "student_id")
+  @OneToMany(mappedBy = "studentId")
   @JsonIgnore
   val reviews: MutableList<ReviewsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "student_id")
+  @OneToMany(mappedBy = "studentId")
   @JsonIgnore
   val inscriptions: MutableList<InscriptionsEntity> = mutableListOf(),
 )

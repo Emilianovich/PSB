@@ -115,7 +115,8 @@ BEGIN
     INTO v_exists
     FROM inscriptions
     WHERE student_id = NEW.student_id
-    AND session_id = NEW.session_id;
+    AND session_id = NEW.session_id
+    AND assisted = TRUE;
 
     IF v_exists = 0 THEN
         SIGNAL SQLSTATE '45000'

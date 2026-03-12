@@ -22,4 +22,8 @@ object DateAndTimeHelper {
   fun formatDatetime(date: LocalDateTime): String {
     return date.format(dateFormatter)
   }
+
+  fun createDateTime(date: LocalDate, time: LocalTime): LocalDateTime {
+    return LocalDateTime.of(date, time)
+  }
 }

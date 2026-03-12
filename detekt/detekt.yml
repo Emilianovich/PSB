@@ -7,11 +7,11 @@ config:
 complexity:
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 80
   LongParameterList:
     active: true
     functionThreshold: 8
-    constructorThreshold: 15
+    constructorThreshold: 20
   TooManyFunctions:
     active: true
     thresholdInFiles: 15

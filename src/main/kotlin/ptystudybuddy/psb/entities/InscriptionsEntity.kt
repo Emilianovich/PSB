@@ -11,15 +11,19 @@ import jakarta.persistence.Table
 import java.io.Serializable
 import java.time.LocalDateTime
 
-@Embeddable data class InscriptionId(val student_id: String, val session_id: String) : Serializable
+@Embeddable
+data class InscriptionId(
+  @Column(columnDefinition = "CHAR(36)") val studentId: String,
+  @Column(columnDefinition = "CHAR(36)") val sessionId: String,
+) : Serializable
 
 @Entity
 @Table(name = "inscriptions")
 class InscriptionsEntity(
   @EmbeddedId val id: InscriptionId,
-  @ManyToOne @MapsId("student_id") @JoinColumn(name = "student_id") val student_id: StudentsEntity,
-  @ManyToOne @MapsId("session_id") @JoinColumn(name = "session_id") val session_id: SessionsEntity,
+  @ManyToOne @MapsId("studentId") @JoinColumn(name = "student_id") val studentId: StudentsEntity,
+  @ManyToOne @MapsId("sessionId") @JoinColumn(name = "session_id") val sessionId: SessionsEntity,
   @Column var assisted: Boolean? = null,
-  @Column var evaluation_status: Boolean? = null,
-  @Column(columnDefinition = "TIMESTAMP") val date_time: LocalDateTime? = null,
+  @Column(name = "evaluation_status") var evaluationStatus: Boolean? = null,
+  @Column(columnDefinition = "TIMESTAMP", name = "date_time") val dateTime: LocalDateTime? = null,
 )

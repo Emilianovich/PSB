@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/availability")
+@PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
 class AvailabilityController(val availabilityService: AvailabilityService) {
   @GetMapping fun getAllAvailabilitySessions() = this.availabilityService.getAllAvailabilities()
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   fun createAvailabilitySession(
     @RequestBody @Valid availabilityData: MutableList<AvailabilityDto>

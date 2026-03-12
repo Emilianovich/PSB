@@ -22,10 +22,10 @@ class TutorsEntity(
   @Column val picture: String,
   @Column(precision = 3, scale = 2) val score: BigDecimal,
   val role: String = "TUTOR",
-  @OneToMany(mappedBy = "tutor_id")
+  @OneToMany(mappedBy = "tutorId")
   @JsonIgnore
   val reviews: MutableList<ReviewsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "tutor_id")
+  @OneToMany(mappedBy = "tutorId")
   @JsonIgnore
-  val sessions_assignments: MutableList<SessionAssignmentEntity> = mutableListOf(),
+  val sessionsAssignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )

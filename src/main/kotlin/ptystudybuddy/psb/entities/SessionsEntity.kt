@@ -17,24 +17,30 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "sessions")
 class SessionsEntity(
-  @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
-  @Column(nullable = false) val expected_students: Int,
-  @Column val available_slots: Int,
-  @Column val attendance_marked: Boolean? = null,
-  @Enumerated(EnumType.STRING) @Column(nullable = false) val status: SessionStatus? = null,
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(columnDefinition = "CHAR(36)")
+  val id: String? = null,
+  @Column(nullable = false, name = "expected_students") val expectedStudents: Int,
+  @Column(name = "available_slots") val availableSlots: Int,
+  @Column(name = "attendance_marked") var attendanceMarked: Boolean? = null,
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  var status: SessionStatus = SessionStatus.ACTIVE,
   @ManyToOne
   @JoinColumn(name = "availability_id", nullable = false)
-  val availability_id: AvailabilityEntity,
-  @Column(nullable = false, columnDefinition = "TIMESTAMP") val end_datetime: LocalDateTime,
-  @OneToMany(mappedBy = "session_id")
+  val availabilityId: AvailabilityEntity,
+  @Column(nullable = false, columnDefinition = "TIMESTAMP", name = "end_datetime")
+  val endDatetime: LocalDateTime,
+  @OneToMany(mappedBy = "sessionId")
   @JsonIgnore
   val reviews: MutableList<ReviewsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "session_id")
+  @OneToMany(mappedBy = "sessionId")
   @JsonIgnore
   val inscriptions: MutableList<InscriptionsEntity> = mutableListOf(),
-  @OneToMany(mappedBy = "session_id")
+  @OneToMany(mappedBy = "sessionId")
   @JsonIgnore
-  val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
+  val sessionsAssignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
 
 enum class SessionStatus {

@@ -31,6 +31,7 @@ class PendingTutorsService(
     val pendingTutorsResponse =
       pendingTutors.map {
         PendingTutorsResponseDto(
+          id = it.id as String,
           social_id = it.socialId,
           fullName = it.fullname,
           email = it.email,
@@ -53,6 +54,7 @@ class PendingTutorsService(
 
     val pendingTutorResponse =
       PendingTutorsResponseDto(
+        id = pendingTutors.id as String,
         social_id = pendingTutors.socialId,
         fullName = pendingTutors.fullname,
         email = pendingTutors.email,

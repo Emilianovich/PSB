@@ -24,8 +24,8 @@ class ReviewsEntity(
   @field:Max(5, message = "La calificación máxima es 5")
   @Column(nullable = false)
   val rating: Int,
-  @Column(columnDefinition = "TIMESTAMP") val date_time: LocalDateTime? = null,
-  @ManyToOne @JoinColumn(name = "student_id") val student_id: StudentsEntity,
-  @ManyToOne @JoinColumn(name = "tutor_id") val tutor_id: TutorsEntity,
-  @ManyToOne @JoinColumn(name = "session_id") val session_id: SessionsEntity,
+  @Column(columnDefinition = "TIMESTAMP", name = "date_time") val dateTime: LocalDateTime? = null,
+  @ManyToOne @JoinColumn(name = "student_id") val studentId: StudentsEntity,
+  @ManyToOne @JoinColumn(name = "tutor_id") val tutorId: TutorsEntity,
+  @ManyToOne @JoinColumn(name = "session_id") val sessionId: SessionsEntity,
 )

@@ -78,6 +78,7 @@ class GlobalExceptionHandler {
       .body(
         ExceptionRes(
           statusCode = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+          // TODO For production change to "Internal Server Error"
           errors = e.message ?: "Error interno del servidor",
         )
       )
