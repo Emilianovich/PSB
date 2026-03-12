@@ -21,7 +21,7 @@ FROM availability av
          INNER JOIN schedules sch ON av.schedule_id = sch.id
          INNER JOIN session_assignment sa ON sa.session_id = s.id
          INNER JOIN tutors tu ON tu.id = sa.tutor_id
-         INNER JOIN subjects sub ON sub.id = sa.subject_id
+         INNER JOIN subjects sub ON sub.id = sa.subject_id;
 
 
 
@@ -47,4 +47,4 @@ FROM inscriptions ins
          INNER JOIN tutors tu ON sa.tutor_id = tu.id
          INNER JOIN subjects sub ON sa.subject_id = sub.id
          INNER JOIN availability av ON s.availability_id = av.id
-         INNER JOIN schedules sch ON av.schedule_id = sch.id
+         INNER JOIN schedules sch ON av.schedule_id = sch.id;

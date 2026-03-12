@@ -6,11 +6,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.time.LocalDate
-import org.hibernate.annotations.Immutable
-import ptystudybuddy.psb.bucket.BucketService
-import ptystudybuddy.psb.helpers.DateAndTimeHelper
 import java.time.LocalTime
 import kotlin.String
+import org.hibernate.annotations.Immutable
+import ptystudybuddy.psb.helpers.DateAndTimeHelper
 
 @Entity
 @Immutable
@@ -58,18 +57,18 @@ fun SessionSummaryEntity.toSessionSummaryRes(): SessionSummaryRes {
   return SessionSummaryRes(
     classId = classId,
     sessionDate = DateAndTimeHelper.formatDate(sessionDate),
-     sessionStatus = sessionStatus,
-     sessionStartTime = DateAndTimeHelper.formatTime(sessionStartTime),
-     sessionEndTime = DateAndTimeHelper.formatTime(sessionEndTime),
-     tutorName = tutorName,
-     tutorId = tutorId,
-     tutorPicture = tutorPicture,
-     tutorScore = tutorScore,
-     subjectName = subjectName,
-     subjectId = subjectId,
-     subjectDesc = subjectDesc,
-     scheduleId = scheduleId,
-     amountOfStudents = amountOfStudents,
-     sessionSlots = sessionSlots,
+    sessionStatus = sessionStatus,
+    sessionStartTime = DateAndTimeHelper.formatTime(sessionStartTime),
+    sessionEndTime = DateAndTimeHelper.formatTime(sessionEndTime),
+    tutorName = tutorName,
+    tutorId = tutorId,
+    tutorPicture = tutorPicture,
+    tutorScore = tutorScore,
+    subjectName = subjectName,
+    subjectId = subjectId,
+    subjectDesc = subjectDesc,
+    scheduleId = scheduleId,
+    amountOfStudents = amountOfStudents,
+    sessionSlots = sessionSlots,
   )
 }

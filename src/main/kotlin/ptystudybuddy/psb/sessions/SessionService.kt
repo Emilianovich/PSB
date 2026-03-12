@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service
 import ptystudybuddy.psb.bucket.BucketService
 import ptystudybuddy.psb.entities.SessionAssignmentEntity
 import ptystudybuddy.psb.entities.SessionAssignmentId
-import ptystudybuddy.psb.entities.SessionSummaryEntity
 import ptystudybuddy.psb.entities.SessionSummaryRes
 import ptystudybuddy.psb.entities.SessionsEntity
 import ptystudybuddy.psb.entities.StudentSessionsRes
@@ -43,20 +42,20 @@ class SessionService(
   private val sessionFilter: SessionFilter,
   private val studentSessions: StudentSessionsRepository,
   private val studentSessionFilter: StudentSessionFilter,
-  private val bucketService: BucketService
+  private val bucketService: BucketService,
 ) {
   // TODO Get One Service
   // REVIEW
   // TODO Evaluate if we should send formatted date and time to frontend
-  fun filterSessions(
-    req: SessionFiltersReq
-  ): ResponseEntity<SuccessRes<List<SessionSummaryRes>>> {
+  fun filterSessions(req: SessionFiltersReq): ResponseEntity<SuccessRes<List<SessionSummaryRes>>> {
     val query = sessionFilter.getSessions(authHelper.userRole(), req, authHelper.userId())
     val rawSessions = sessionSummaryView.findAll(query)
     rawSessions.takeUnless { it.isEmpty() }
       ?: throw EntityNotFoundException("No se encontró sesiones que cumplan lo solicitado")
-    val sessions = rawSessions.map { it.toSessionSummaryRes()}
-    sessions.onEach { session -> session.tutorPicture = bucketService.getSignedUrl(session.tutorPicture) }
+    val sessions = rawSessions.map { it.toSessionSummaryRes() }
+    sessions.onEach { session ->
+      session.tutorPicture = bucketService.getSignedUrl(session.tutorPicture)
+    }
     return ResponseEntity.ok()
       .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = sessions))
   }
@@ -73,7 +72,9 @@ class SessionService(
       throw EntityNotFoundException("No tiene sesiones pendientes")
     }
     val formatedSessions = sessions.map { it.toStudentSessionsRes() }
-    formatedSessions.onEach { session -> session.tutorPicture = bucketService.getSignedUrl(session.tutorPicture) }
+    formatedSessions.onEach { session ->
+      session.tutorPicture = bucketService.getSignedUrl(session.tutorPicture)
+    }
     return ResponseEntity.ok()
       .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = formatedSessions))
   }

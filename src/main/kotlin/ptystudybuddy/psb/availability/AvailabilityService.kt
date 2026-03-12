@@ -43,25 +43,25 @@ class AvailabilityService(
     }
 
     val classrooms =
-      classroomsRepository.findAllByIdIn(availabilityData.map { it.class_id }).associateBy { it.id }
+      classroomsRepository.findAllByIdIn(availabilityData.map { it.classId }).associateBy { it.id }
 
-    val missingClassrooms = availabilityData.map { it.class_id }.filter { it !in classrooms.keys }
+    val missingClassrooms = availabilityData.map { it.classId }.filter { it !in classrooms.keys }
 
     if (missingClassrooms.isNotEmpty()) {
       throw DataIntegrityViolationException("No existen los salones: $missingClassrooms")
     }
 
     val schedules =
-      schedulesRepository.findAllByIdIn(availabilityData.map { it.schedule_id }).associateBy {
+      schedulesRepository.findAllByIdIn(availabilityData.map { it.scheduleId }).associateBy {
         it.id
       }
 
-    val missingSchedules = availabilityData.map { it.schedule_id }.filter { it !in schedules.keys }
+    val missingSchedules = availabilityData.map { it.scheduleId }.filter { it !in schedules.keys }
     if (missingSchedules.isNotEmpty()) {
       throw DataIntegrityViolationException("No existen los horarios: $missingSchedules")
     }
 
-    val ids = availabilityData.map { "${it.class_id}_${it.schedule_id}_${it.date}" }
+    val ids = availabilityData.map { "${it.classId}_${it.scheduleId}_${it.date}" }
 
     availabilityRepository
       .findByIdIn(ids)
@@ -76,14 +76,14 @@ class AvailabilityService(
     val availabilityBlocks =
       availabilityData.map { dto ->
         val classroom =
-          classrooms[dto.class_id]
-            ?: throw IllegalArgumentException("Classroom ${dto.class_id} not found")
+          classrooms[dto.classId]
+            ?: throw IllegalArgumentException("Classroom ${dto.classId} not found")
         val schedule =
-          schedules[dto.schedule_id]
-            ?: throw IllegalArgumentException("Schedule ${dto.schedule_id} not found")
+          schedules[dto.scheduleId]
+            ?: throw IllegalArgumentException("Schedule ${dto.scheduleId} not found")
 
         AvailabilityEntity(
-          id = "${dto.class_id}_${dto.schedule_id}_${dto.date}",
+          id = "${dto.classId}_${dto.scheduleId}_${dto.date}",
           classId = classroom,
           scheduleId = schedule,
           date = dto.date,
