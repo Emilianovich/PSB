@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import ptystudybuddy.psb.entities.SessionSummaryEntity
 import ptystudybuddy.psb.entities.SessionSummaryRes
 import ptystudybuddy.psb.entities.StudentSessionsRes
 import ptystudybuddy.psb.presentation.SuccessRes
@@ -23,11 +22,11 @@ class SessionController(private val sessionService: SessionService) {
   @PreAuthorize("hasRole('TUTOR') or hasRole('ADMIN')")
   @GetMapping
   fun getAll(
-    @RequestParam subjectId: String?,
-    @RequestParam date: LocalDate?,
+    @RequestParam(required = false) subjectId: String,
+    @RequestParam(required = false) date: LocalDate,
     // TODO Maybe change type to ENUM Class
-    @RequestParam status: String?,
-    @RequestParam tutorId: String?,
+    @RequestParam(required = false) status: String,
+    @RequestParam(required = false) tutorId: String,
   ): ResponseEntity<SuccessRes<List<SessionSummaryRes>>> =
     sessionService.filterSessions(
       SessionFiltersReq(subjectId = subjectId, date = date, status = status, tutorId = tutorId)
@@ -41,8 +40,8 @@ class SessionController(private val sessionService: SessionService) {
   @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/student")
   fun getStudentSessions(
-    @RequestParam status: String?,
-    @RequestParam assisted: Boolean?,
+    @RequestParam(required = false) status: String,
+    @RequestParam(required = false) assisted: Boolean,
   ): ResponseEntity<SuccessRes<List<StudentSessionsRes>>> =
     sessionService.handleStudentFilter(
       StudentSessionFiltersReq(status = status, assisted = assisted)

@@ -7,13 +7,13 @@ import ptystudybuddy.psb.entities.AvailabilityEntity
 import ptystudybuddy.psb.helpers.DateAndTimeHelper
 
 data class AvailabilityDto(
-  @field:NotBlank val class_id: String,
-  @field:NotBlank val schedule_id: String,
+  @field:NotBlank val classId: String,
+  @field:NotBlank val scheduleId: String,
   @field:NotNull val date: LocalDate,
 )
 
 data class AvailabilityRes(
-  val availabilityId: String,
+  val availabilityId: String? = null,
   val classId: String,
   val scheduleId: String,
   val startTime: String,
@@ -23,7 +23,7 @@ data class AvailabilityRes(
 
 fun AvailabilityEntity.toResponseDto(): AvailabilityRes {
   return AvailabilityRes(
-    availabilityId = this.id as String,
+    availabilityId = this.id,
     classId = this.classId.id,
     scheduleId = this.scheduleId.id,
     startTime = DateAndTimeHelper.formatTime(this.scheduleId.startTime),

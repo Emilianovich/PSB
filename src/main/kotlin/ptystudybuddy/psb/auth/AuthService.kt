@@ -82,9 +82,7 @@ class AuthService(
     student.takeIf { bCryptPasswordEncoder.matches(req.password, student.password) }
       ?: throw AccessDeniedException("Correo o contraseña incorrectos")
     val id = student.id ?: throw UnprocessableEntityException("Estudiante no válido")
-    println("Student id $id")
     val refreshToken = jwtService.generateRefreshToken(id, student.role)
-    println("Student refresh token $refreshToken")
     storeRefreshToken(refreshToken)
     setCookies(jwtService.generateAccessToken(id, student.role), refreshToken)
     return ResponseEntity.ok(
@@ -214,8 +212,6 @@ class AuthService(
   private fun storeRefreshToken(rawToken: String) {
     val userRole = jwtService.getUserRoleFromToken(rawToken)
     val userId = jwtService.getUserIdFromToken(rawToken)
-    println("User id from store refresh token: $userId")
-    println("User role from store refresh token: $userRole")
     if (userRole == "ADMIN") {
       adminsRepository.findByIdOrNull(userId)
         ?: throw EntityNotFoundException("Usuario no encontrado")
@@ -246,7 +242,6 @@ class AuthService(
       Instant.ofEpochMilli(Instant.now().plusMillis(jwtService.refreshTokenValidity).toEpochMilli())
     val expiryTimestamp = LocalDateTime.ofInstant(expiresAt, ZoneOffset.UTC)
     findCurrentRefreshToken(userId, rawToken)
-    println("Current User $userId $userRole $hashedToken")
     refreshTokensRepository.save(
       RefreshTokensEntity(
         token = hashedToken,

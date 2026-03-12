@@ -22,20 +22,26 @@ class ReviewsService(
   private val sessionsRepository: SessionsRepository,
   private val sessionAssignmentRepository: SessionAssignmentRepository,
   private val studentsRepository: StudentsRepository,
-  private val authHelper: AuthHelper
+  private val authHelper: AuthHelper,
 ) {
 
   fun createReview(req: CreateReviewRequest): ResponseEntity<SuccessRes<String>> {
-    val session = sessionsRepository.findByIdOrNull(req.sessionId) ?: throw EntityNotFoundException("No se encontró la sesión especificada")
+    val session =
+      sessionsRepository.findByIdOrNull(req.sessionId)
+        ?: throw EntityNotFoundException("No se encontró la sesión especificada")
     val tutor = sessionAssignmentRepository.findBySessionId(session)?.tutorId
-    val student = studentsRepository.findByIdOrNull(authHelper.userId()) ?: throw EntityNotFoundException("Este estudiante no existe")
-    reviewsRepository.save(ReviewsEntity(
-      comment = req.comment,
-      rating = req.rating,
-      sessionId = session,
-      tutorId = tutor as TutorsEntity,
-      studentId = student
-    ))
+    val student =
+      studentsRepository.findByIdOrNull(authHelper.userId())
+        ?: throw EntityNotFoundException("Este estudiante no existe")
+    reviewsRepository.save(
+      ReviewsEntity(
+        comment = req.comment,
+        rating = req.rating,
+        sessionId = session,
+        tutorId = tutor as TutorsEntity,
+        studentId = student,
+      )
+    )
 
     return ResponseEntity.ok(
       SuccessRes(HttpStatus.CREATED.value(), "Se ha enviado su retroalimentación")

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ptystudybuddy.psb.entities.ReviewsEntity
 
 @RestController
 @PreAuthorize("hasRole('STUDENT')")
@@ -19,11 +18,8 @@ class ReviewsController(private val reviewsService: ReviewsService) {
   fun getReviewPerSession(@PathVariable sessionId: String) = reviewsService.getAllReviews(sessionId)
 
   @PostMapping
-  fun createReview(@Valid @RequestBody review: CreateReviewRequest) = reviewsService.createReview(review)
+  fun createReview(@Valid @RequestBody review: CreateReviewRequest) =
+    reviewsService.createReview(review)
 }
 
-data class CreateReviewRequest(
-  val comment: String? = null,
-  val rating: Int,
-  val sessionId: String
-)
+data class CreateReviewRequest(val comment: String? = null, val rating: Int, val sessionId: String)
