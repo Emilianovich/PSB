@@ -15,12 +15,13 @@ import java.time.LocalDateTime
 @Table(name = "availability")
 class AvailabilityEntity(
   @Id val id: String? = null,
-  @ManyToOne @JoinColumn(name = "class_id", nullable = false) val class_id: ClassroomsEntity,
-  @ManyToOne @JoinColumn(name = "schedule_id", nullable = false) val schedule_id: SchedulesEntity,
+  @ManyToOne @JoinColumn(name = "class_id", nullable = false) val classId: ClassroomsEntity,
+  @ManyToOne @JoinColumn(name = "schedule_id", nullable = false) val scheduleId: SchedulesEntity,
   @Column(nullable = false) val date: LocalDate,
-  @Column val selected: Boolean? = null,
-  @Column(columnDefinition = "TIMESTAMP") val end_datetime: LocalDateTime? = null,
-  @OneToMany(mappedBy = "availability_id")
+  @Column var selected: Boolean? = null,
+  @Column(columnDefinition = "TIMESTAMP", name = "end_datetime")
+  val endDatetime: LocalDateTime? = null,
+  @OneToMany(mappedBy = "availabilityId")
   @JsonIgnore
   val sessions: MutableList<SessionsEntity> = mutableListOf(),
 )

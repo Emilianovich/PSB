@@ -19,5 +19,11 @@ class ReviewsController(private val reviewsService: ReviewsService) {
   fun getReviewPerSession(@PathVariable sessionId: String) = reviewsService.getAllReviews(sessionId)
 
   @PostMapping
-  fun createReview(@Valid @RequestBody review: ReviewsEntity) = reviewsService.createReview(review)
+  fun createReview(@Valid @RequestBody review: CreateReviewRequest) = reviewsService.createReview(review)
 }
+
+data class CreateReviewRequest(
+  val comment: String? = null,
+  val rating: Int,
+  val sessionId: String
+)

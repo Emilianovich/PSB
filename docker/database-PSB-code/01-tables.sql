@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 CREATE TABLE students (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     fullname VARCHAR(255) NOT NULL,
@@ -101,7 +102,7 @@ CREATE TABLE sessions (
 
 CREATE TABLE subjects (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    name VARCHAR(25) NOT NULL,
+    name VARCHAR(75) NOT NULL,
     description VARCHAR(125) NOT NULL
 );
 
@@ -140,7 +141,6 @@ CREATE TABLE refresh_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     role VARCHAR(8) NOT NULL
         CHECK (role IN ('ADMIN','STUDENT','TUTOR')),
-    UNIQUE (token)
 );
 
 
@@ -180,3 +180,13 @@ INSERT INTO schedules (id, start_time, end_time) VALUES
 INSERT INTO admins (social_id, fullname, email, password) VALUES
                                                               ('8-1234-56789', 'Steven Ampie', 'steven.ampie@ptystudybuddy.dev', '$2a$12$rAruzY1SvgKlAUrAovZcPu0cRQnfcvfh1wWkbZa4PBP84FQgj2UZ.'),
                                                               ('8-1022-970', 'Emiola Fagbemi', 'emiola.fagbemi@ptystudybuddy.dev', '$2a$12$HYv7j3MSq2C76PVD0IjgE.gFjBp9Q7bji.4KybKDLp8ns1vVwYsZO');
+
+INSERT INTO subjects (name, description) VALUES
+                                             ('Cálculo I', 'Introducción a límites, derivadas e integrales de funciones de una variable con aplicaciones en ciencias e ingeniería.'),
+                                             ('Cálculo II', 'Estudio de técnicas de integración, series numéricas, sucesiones y coordenadas polares para funciones de una variable.'),
+                                             ('Cálculo III', 'Extensión del cálculo a funciones de varias variables, integrales múltiples, vectores y teoremas de Green y Stokes.'),
+                                             ('Física I', 'Principios de mecánica clásica, cinemática, dinámica, trabajo, energía y leyes de Newton aplicadas a sistemas físicos.'),
+                                             ('Física II', 'Estudio del electromagnetismo, ondas, óptica y termodinámica con aplicaciones en ingeniería y tecnología moderna.'),
+                                             ('Inglés', 'Desarrollo de habilidades de comprensión y expresión en inglés técnico orientado a ciencias e ingeniería profesional.');
+
+

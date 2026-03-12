@@ -11,10 +11,11 @@ import java.time.LocalTime
 @Entity
 @Table(name = "schedules")
 class SchedulesEntity(
-  @Id val id: String,
-  @Column(nullable = false, columnDefinition = "TIME") val start_time: LocalTime,
-  @Column(nullable = false, columnDefinition = "TIME") val end_time: LocalTime,
-  @OneToMany(mappedBy = "schedule_id")
+  @Id @Column(columnDefinition = "CHAR(4)") val id: String,
+  @Column(nullable = false, columnDefinition = "TIME", name = "start_time")
+  val startTime: LocalTime,
+  @Column(nullable = false, columnDefinition = "TIME", name = "end_time") val endTime: LocalTime,
+  @OneToMany(mappedBy = "scheduleId")
   @JsonIgnore
   val availability: MutableList<AvailabilityEntity> = mutableListOf(),
 )

@@ -15,7 +15,7 @@ class SubjectsEntity(
   @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
   @Column(nullable = false) val name: String,
   @Column(nullable = false) val description: String,
-  @OneToMany(mappedBy = "subject_id")
+  @OneToMany(mappedBy = "subjectId")
   @JsonIgnore
-  val sessions_assignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
+  val sessionsAssignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
