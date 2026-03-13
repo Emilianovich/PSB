@@ -252,6 +252,15 @@ class AuthService(
     )
   }
 
+  private fun <T : HasEmailAndPassword> saveNewPassword(
+    entity: T,
+    newPassword: String,
+    patch: (T) -> Unit,
+  ) {
+    entity.password = validateAndHashNewPassword(entity.password, newPassword)
+    patch(entity)
+  }
+
   fun handlePasswordPatch(req: PatchPasswordReq): ResponseEntity<SuccessRes<String>> {
     val role = authHelper.userRole()
     val id = authHelper.userId()
@@ -265,25 +274,19 @@ class AuthService(
         val admin =
           adminsRepository.findByIdOrNull(id)
             ?: throw EntityNotFoundException("Usuario no encontrado")
-        val adminNewPassword = comparePassword(admin.password, req.password)
-        admin.password = adminNewPassword
-        adminsRepository.save(admin)
+        saveNewPassword(admin, req.password) { adminsRepository.save(it) }
       }
       "TUTOR" -> {
         val tutor =
           tutorsRepository.findByIdOrNull(id)
             ?: throw EntityNotFoundException("Usuario no encontrado")
-        val tutorNewPassword = comparePassword(tutor.password, req.password)
-        tutor.password = tutorNewPassword
-        tutorsRepository.save(tutor)
+        saveNewPassword(tutor, req.password) { tutorsRepository.save(it) }
       }
       else -> {
         val student =
           studentsRepository.findByIdOrNull(id)
             ?: throw EntityNotFoundException("Usuario no encontrado")
-        val studentNewPassword = comparePassword(student.password, req.password)
-        student.password = studentNewPassword
-        studentsRepository.save(student)
+        saveNewPassword(student, req.password) { studentsRepository.save(it) }
       }
     }
     return ResponseEntity.ok(
@@ -294,7 +297,7 @@ class AuthService(
     )
   }
 
-  private fun comparePassword(hash: String, password: String): String {
+  private fun validateAndHashNewPassword(hash: String, password: String): String {
     password.takeUnless { bCryptPasswordEncoder.matches(it, hash) }
       ?: throw IllegalArgumentException("Su nueva contraseña no puede ser igual a la anterior")
     return bCryptPasswordEncoder.encode(password)
