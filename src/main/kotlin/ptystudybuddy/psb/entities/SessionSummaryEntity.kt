@@ -2,6 +2,8 @@ package ptystudybuddy.psb.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.math.BigDecimal
@@ -19,7 +21,7 @@ class SessionSummaryEntity(
   @Column val classId: String,
   @Column val sessionDate: LocalDate,
   // TODO Enum annotation validation
-  @Column val sessionStatus: String,
+  @Column @Enumerated(EnumType.STRING) val sessionStatus: SessionStatus,
   @Column val sessionStartTime: LocalTime,
   @Column val sessionEndTime: LocalTime,
   @Column val tutorName: String,
@@ -38,7 +40,7 @@ data class SessionSummaryRes(
   val classId: String,
   val sessionDate: String,
   // TODO Enum annotation validation
-  val sessionStatus: String,
+  val sessionStatus: SessionStatus,
   val sessionStartTime: String,
   val sessionEndTime: String,
   val tutorName: String,
