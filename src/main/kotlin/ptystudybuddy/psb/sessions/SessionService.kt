@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import ptystudybuddy.psb.bucket.BucketService
+import ptystudybuddy.psb.email.SendGridService
 import ptystudybuddy.psb.entities.SessionAssignmentEntity
 import ptystudybuddy.psb.entities.SessionAssignmentId
+import ptystudybuddy.psb.entities.SessionStatus
 import ptystudybuddy.psb.entities.SessionSummaryRes
 import ptystudybuddy.psb.entities.SessionsEntity
 import ptystudybuddy.psb.entities.StudentSessionsRes
@@ -22,6 +24,7 @@ import ptystudybuddy.psb.helpers.AuthHelper
 import ptystudybuddy.psb.helpers.DateAndTimeHelper
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.AvailabilityRepository
+import ptystudybuddy.psb.repositories.InscriptionsRepository
 import ptystudybuddy.psb.repositories.SessionAssignmentRepository
 import ptystudybuddy.psb.repositories.SessionSummaryRepository
 import ptystudybuddy.psb.repositories.SessionsRepository
@@ -43,6 +46,8 @@ class SessionService(
   private val studentSessions: StudentSessionsRepository,
   private val studentSessionFilter: StudentSessionFilter,
   private val bucketService: BucketService,
+  private val inscriptionsRepository: InscriptionsRepository,
+  private val sendGridService: SendGridService,
 ) {
   // NOTE finding a specific session when student wants to enroll
   fun getOneSession(id: String): ResponseEntity<SuccessRes<SessionsForInscriptionRes>> {
@@ -230,5 +235,49 @@ class SessionService(
         subjectId,
       )
     return sessions
+  }
+
+  @Transactional
+  fun cancelSession(sessionId: String): ResponseEntity<SuccessRes<String>> {
+    val session =
+      sessionsRepository.findByIdOrNull(sessionId)
+        ?: throw EntityNotFoundException("No se encontró la sesión solicitada")
+    val scheduleStartTime = session.availabilityId.scheduleId.startTime
+    val sessionDate = session.availabilityId.date
+    val sessionStart = LocalDateTime.of(sessionDate, scheduleStartTime)
+    val validDeleteDateTime = sessionStart.minusDays(1)
+    val sessionAssigment =
+      sessionAssignmentRepository.findBySessionId(session)
+        ?: throw IllegalArgumentException("La sesión solicitada no ha sido asignada")
+    val subjectName = sessionAssigment.subjectId.name
+    val tutorId = sessionAssigment.tutorId.id
+    if (tutorId != null && tutorId != authHelper.userId()) {
+      throw EntityNotFoundException(
+        "No se encontró la sesión solicitada entre su lista de sesiones pendientes"
+      )
+    }
+    if (session.status != SessionStatus.ACTIVE)
+      throw IllegalArgumentException("Esta sesión ya no está disponible")
+    if (LocalDateTime.now().isAfter(validDeleteDateTime))
+      throw IllegalArgumentException(
+        "Las sesiones no pueden cancelarse dentro de las 24 horas previas a su inicio"
+      )
+    session.status = SessionStatus.CANCELLED
+    val listOfStudentEmails = mutableListOf<String>()
+    val inscriptions = inscriptionsRepository.findBySessionId(session)
+    inscriptions
+      .takeIf { it.isNotEmpty() }
+      ?.let {
+        it.forEach { inscription -> listOfStudentEmails.add(inscription.studentId.email) }
+        inscriptionsRepository.deleteBySessionId(session)
+        sendGridService.sendEmailAfterSessionCancel(
+          listOfStudentEmails,
+          subjectName,
+          sessionStart,
+          session.availabilityId.classId.id,
+        )
+      }
+    return ResponseEntity.ok()
+      .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = "Se canceló la sesión"))
   }
 }
