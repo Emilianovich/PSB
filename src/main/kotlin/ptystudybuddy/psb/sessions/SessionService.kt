@@ -54,10 +54,10 @@ class SessionService(
         ?: throw UnprocessableEntityException("La materia buscada no existe")
     val sessions =
       getListOfSessionsBySubjectId(subjectId).takeUnless { it.isEmpty() }
-        ?: throw EntityNotFoundException(
-          "No hay se encontró la sesión especificada para esta materia"
-        )
-    val session = sessions.first { it.sessionId == requestedSession.id }
+        ?: throw EntityNotFoundException("No se encontró la sesión especificada para esta materia")
+    val session =
+      sessions.find { it.sessionId == requestedSession.id }
+        ?: throw EntityNotFoundException("No se encontró la sesión especificada para esta materia")
     return ResponseEntity.ok(SuccessRes(statusCode = HttpStatus.OK.value(), content = session))
   }
 
