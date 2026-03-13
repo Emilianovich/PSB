@@ -1,7 +1,8 @@
 package ptystudybuddy.psb.sessions
 
+import ptystudybuddy.psb.annotations.sessionStatus.SessionStatusValidator
+
 data class StudentSessionFiltersReq(
-  // TODO Maybe add Enum Class validation
-  val status: String? = null,
+  @field:SessionStatusValidator val status: String? = null,
   val assisted: Boolean? = null,
 )

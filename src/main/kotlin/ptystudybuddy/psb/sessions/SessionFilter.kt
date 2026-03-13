@@ -25,12 +25,9 @@ class SessionFilter {
       }
       // Making sure tutor cannot get another tutor info
       else {
-        println("The tutor id $tutorId")
         predicates.add(builder.equal(root.get<String>("tutorId"), tutorId))
       }
-      filter.status?.let {
-        predicates.add(builder.equal(root.get<String>("sessionStatus"), it.uppercase()))
-      }
+      filter.status?.let { predicates.add(builder.equal(root.get<String>("sessionStatus"), it)) }
 
       builder.and(*predicates.toTypedArray())
     }

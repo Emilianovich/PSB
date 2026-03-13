@@ -15,7 +15,8 @@ import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
 class JwtService(@Value("\${secret.key}") private val rawKey: String) {
   private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(rawKey))
 
-  private val accessTokenValidity = Duration.ofMinutes(2).toMillis()
+  // FIXME CHANGE FOR PROD BACK TO 2 MIN
+  private val accessTokenValidity = Duration.ofMinutes(50).toMillis()
   val refreshTokenValidity = Duration.ofDays(7).toMillis()
 
   private fun generateToken(userId: String, type: String, expiry: Long, role: String): String {
