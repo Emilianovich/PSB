@@ -16,7 +16,7 @@ class StudentsEntity(
   @Id @GeneratedValue(strategy = GenerationType.UUID) val id: String? = null,
   @Column(nullable = false) val fullname: String,
   @Column(nullable = false, name = "social_id") val socialId: String,
-  @Column(nullable = false, unique = true) override val email: String,
+  @Column(nullable = false, unique = true) override var email: String,
   @Column(nullable = false) override var password: String,
   @Column(nullable = false) val picture: String,
   val role: String = "STUDENT",
