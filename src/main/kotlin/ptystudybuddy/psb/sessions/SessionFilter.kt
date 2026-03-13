@@ -28,7 +28,9 @@ class SessionFilter {
       else {
         predicates.add(builder.equal(root.get<String>("tutorId"), tutorId))
       }
-      filter.status?.let { predicates.add(builder.equal(root.get<SessionStatus>("sessionStatus"), it)) }
+      filter.status?.let {
+        predicates.add(builder.equal(root.get<SessionStatus>("sessionStatus"), it))
+      }
 
       builder.and(*predicates.toTypedArray())
     }
