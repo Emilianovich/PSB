@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/sessions")
 class SessionController(private val sessionService: SessionService) {
+  @PreAuthorize("hasRole('STUDENT')")
+  @GetMapping("/{sessionId}")
+  fun getSession(@PathVariable sessionId: String) = sessionService.getOneSession(sessionId)
+
   @PreAuthorize("hasRole('TUTOR') or hasRole('ADMIN')")
   @GetMapping
   fun getAll(@Valid @ModelAttribute req: SessionFiltersReq) = sessionService.filterSessions(req)
