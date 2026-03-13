@@ -46,8 +46,9 @@ class StudentsService(
     studentUpdateDto.picture?.let { student.picture = bucketService.update(it, student.picture) }
 
     studentUpdateDto.email?.let {
-      studentsRepository.findByEmail(it)?.let {
-        throw DataIntegrityViolationException("Ya existe un usuario con este correo")
+      studentsRepository.findByEmail(it)?.let { student ->
+        if (student.id != userId)
+          throw DataIntegrityViolationException("Ya existe un usuario con este correo")
       }
 
       student.email = it

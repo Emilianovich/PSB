@@ -13,5 +13,5 @@ data class StudentsResponseDto(
 
 data class StudentUpdateDto(
   @field:ImageValidator val picture: MultipartFile?,
-  @field:Email(message = "Formate de email erroneo") val email: String?,
+  @field:Email(message = "Formato de correo erróneo") val email: String?,
 )
