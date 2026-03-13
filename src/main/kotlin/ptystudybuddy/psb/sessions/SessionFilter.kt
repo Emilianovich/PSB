@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Predicate
 import java.time.LocalDate
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import ptystudybuddy.psb.entities.SessionStatus
 import ptystudybuddy.psb.entities.SessionSummaryEntity
 
 @Service
@@ -27,7 +28,7 @@ class SessionFilter {
       else {
         predicates.add(builder.equal(root.get<String>("tutorId"), tutorId))
       }
-      filter.status?.let { predicates.add(builder.equal(root.get<String>("sessionStatus"), it)) }
+      filter.status?.let { predicates.add(builder.equal(root.get<SessionStatus>("sessionStatus"), it)) }
 
       builder.and(*predicates.toTypedArray())
     }

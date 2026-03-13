@@ -20,7 +20,6 @@ class SessionSummaryEntity(
   @Id val id: Long,
   @Column val classId: String,
   @Column val sessionDate: LocalDate,
-  // TODO Enum annotation validation
   @Column @Enumerated(EnumType.STRING) val sessionStatus: SessionStatus,
   @Column val sessionStartTime: LocalTime,
   @Column val sessionEndTime: LocalTime,
@@ -39,7 +38,6 @@ class SessionSummaryEntity(
 data class SessionSummaryRes(
   val classId: String,
   val sessionDate: String,
-  // TODO Enum annotation validation
   val sessionStatus: SessionStatus,
   val sessionStartTime: String,
   val sessionEndTime: String,
