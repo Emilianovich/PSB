@@ -18,7 +18,7 @@ class TutorsEntity(
   @Column(nullable = false) val fullname: String,
   @Column(nullable = false) val cv: String,
   @Column(nullable = false, unique = true) val email: String,
-  @Column(nullable = false) val password: String,
+  @Column(nullable = false) var password: String,
   @Column val picture: String,
   @Column(precision = 3, scale = 2) val score: BigDecimal,
   val role: String = "TUTOR",

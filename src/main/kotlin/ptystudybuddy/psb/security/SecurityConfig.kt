@@ -29,6 +29,8 @@ class SecurityConfig(private val jwtFilter: JwtFilter) {
         auth
           .requestMatchers("/auth/logout")
           .authenticated()
+          .requestMatchers("/auth/password")
+          .authenticated()
           .requestMatchers("/auth/**")
           .permitAll()
           .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)

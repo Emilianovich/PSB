@@ -3,6 +3,7 @@ package ptystudybuddy.psb.auth
 import jakarta.validation.Valid
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,4 +28,8 @@ class AuthController(private val authService: AuthService) {
   @PostMapping("logout") fun logout() = authService.logout()
 
   @PostMapping("refresh") fun refreshToken() = authService.refreshAccessToken()
+
+  @PatchMapping("password")
+  fun patchPassword(@Valid @RequestBody req: PatchPasswordReq) =
+    authService.handlePasswordPatch(req)
 }
