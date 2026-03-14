@@ -11,8 +11,8 @@ object TutorsSpecification {
       val filter = fullname?.let { cb.like(root.get("fullname"), "%$fullname%") }
 
       val finalOrder =
-        if (orderBy.equals("DESC", ignoreCase = true)) cb.desc(root.get<String>("fullname"))
-        else cb.asc(root.get<String>("fullname"))
+        if (orderBy.equals("DESC", ignoreCase = true)) cb.desc(root.get<String>("score"))
+        else cb.asc(root.get<String>("score"))
 
       query?.orderBy(finalOrder)
 

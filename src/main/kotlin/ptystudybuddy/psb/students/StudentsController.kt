@@ -1,5 +1,6 @@
 package ptystudybuddy.psb.students
 
+import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -15,6 +16,6 @@ class StudentsController(val studentsService: StudentsService) {
   @GetMapping("/profile") fun getProfile() = studentsService.getProfile()
 
   @PatchMapping("/profile")
-  fun updateCredentials(@ModelAttribute studentsUpdateDto: StudentUpdateDto) =
+  fun updateCredentials(@Valid @ModelAttribute studentsUpdateDto: StudentUpdateDto) =
     studentsService.updateCredentials(studentsUpdateDto)
 }
