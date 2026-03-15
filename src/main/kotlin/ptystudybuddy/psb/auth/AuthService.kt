@@ -251,4 +251,55 @@ class AuthService(
       )
     )
   }
+
+  private fun <T : HasEmailAndPassword> saveNewPassword(
+    entity: T,
+    newPassword: String,
+    patch: (T) -> Unit,
+  ) {
+    entity.password = validateAndHashNewPassword(entity.password, newPassword)
+    patch(entity)
+  }
+
+  fun handlePasswordPatch(req: PatchPasswordReq): ResponseEntity<SuccessRes<String>> {
+    val role = authHelper.userRole()
+    val id = authHelper.userId()
+    if (req.password != req.confirmPassword) {
+      throw IllegalArgumentException(
+        "Las contraseñas ingresadas no coinciden. Por favor verifíquelas e inténtelo nuevamente"
+      )
+    }
+    when (role) {
+      "ADMIN" -> {
+        val admin =
+          adminsRepository.findByIdOrNull(id)
+            ?: throw EntityNotFoundException("Usuario no encontrado")
+        saveNewPassword(admin, req.password) { adminsRepository.save(it) }
+      }
+      "TUTOR" -> {
+        val tutor =
+          tutorsRepository.findByIdOrNull(id)
+            ?: throw EntityNotFoundException("Usuario no encontrado")
+        saveNewPassword(tutor, req.password) { tutorsRepository.save(it) }
+      }
+      else -> {
+        val student =
+          studentsRepository.findByIdOrNull(id)
+            ?: throw EntityNotFoundException("Usuario no encontrado")
+        saveNewPassword(student, req.password) { studentsRepository.save(it) }
+      }
+    }
+    return ResponseEntity.ok(
+      SuccessRes(
+        statusCode = HttpStatus.OK.value(),
+        content = "Su contraseña fue cambiada exitosamente",
+      )
+    )
+  }
+
+  private fun validateAndHashNewPassword(hash: String, password: String): String {
+    password.takeUnless { bCryptPasswordEncoder.matches(it, hash) }
+      ?: throw IllegalArgumentException("Su nueva contraseña no puede ser igual a la anterior")
+    return bCryptPasswordEncoder.encode(password)
+  }
 }

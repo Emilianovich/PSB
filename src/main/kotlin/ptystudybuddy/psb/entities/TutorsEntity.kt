@@ -11,6 +11,7 @@ import jakarta.persistence.Table
 import java.math.BigDecimal
 import kotlin.String
 import ptystudybuddy.psb.tutors.TutorsDto
+import ptystudybuddy.psb.auth.HasEmailAndPassword
 
 @Entity
 @Table(name = "tutors")
@@ -19,8 +20,8 @@ class TutorsEntity(
   @Column(name = "social_id", nullable = false) val socialId: String,
   @Column(nullable = false) val fullname: String,
   @Column(nullable = false) val cv: String,
-  @Column(nullable = false, unique = true) val email: String,
-  @Column(nullable = false) val password: String,
+  @Column(nullable = false, unique = true) override val email: String,
+  @Column(nullable = false) override var password: String,
   @Column var picture: String,
   @Column(precision = 3, scale = 2) val score: BigDecimal,
   val role: String = "TUTOR",
@@ -30,7 +31,7 @@ class TutorsEntity(
   @OneToMany(mappedBy = "tutorId")
   @JsonIgnore
   val sessionsAssignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
-)
+) : HasEmailAndPassword
 
 fun TutorsEntity.toTutorsDto(): TutorsDto {
 

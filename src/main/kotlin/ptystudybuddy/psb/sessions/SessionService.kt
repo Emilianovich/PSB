@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import ptystudybuddy.psb.bucket.BucketService
+import ptystudybuddy.psb.email.SendGridService
 import ptystudybuddy.psb.entities.SessionAssignmentEntity
 import ptystudybuddy.psb.entities.SessionAssignmentId
+import ptystudybuddy.psb.entities.SessionStatus
 import ptystudybuddy.psb.entities.SessionSummaryRes
 import ptystudybuddy.psb.entities.SessionsEntity
 import ptystudybuddy.psb.entities.StudentSessionsRes
@@ -22,6 +24,7 @@ import ptystudybuddy.psb.helpers.AuthHelper
 import ptystudybuddy.psb.helpers.DateAndTimeHelper
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.AvailabilityRepository
+import ptystudybuddy.psb.repositories.InscriptionsRepository
 import ptystudybuddy.psb.repositories.SessionAssignmentRepository
 import ptystudybuddy.psb.repositories.SessionSummaryRepository
 import ptystudybuddy.psb.repositories.SessionsRepository
@@ -43,10 +46,27 @@ class SessionService(
   private val studentSessions: StudentSessionsRepository,
   private val studentSessionFilter: StudentSessionFilter,
   private val bucketService: BucketService,
+  private val inscriptionsRepository: InscriptionsRepository,
+  private val sendGridService: SendGridService,
 ) {
-  // TODO Get One Service
-  // REVIEW
-  // TODO Evaluate if we should send formatted date and time to frontend
+  // NOTE finding a specific session when student wants to enroll
+  fun getOneSession(id: String): ResponseEntity<SuccessRes<SessionsForInscriptionRes>> {
+    val requestedSession =
+      sessionsRepository.findByIdOrNull(id)
+        ?: throw EntityNotFoundException("La sesión buscada no existe")
+    val subjectId =
+      sessionAssignmentRepository.findBySessionId(requestedSession)?.subjectId?.id
+        ?: throw UnprocessableEntityException("La materia buscada no existe")
+    val sessions =
+      getListOfSessionsBySubjectId(subjectId).takeUnless { it.isEmpty() }
+        ?: throw EntityNotFoundException("No se encontró la sesión especificada para esta materia")
+    val session =
+      sessions.find { it.sessionId == requestedSession.id }
+        ?: throw EntityNotFoundException("No se encontró la sesión especificada para esta materia")
+    return ResponseEntity.ok(SuccessRes(statusCode = HttpStatus.OK.value(), content = session))
+  }
+
+  // NOTE For admin is to find session per day and tutors to see their past and pending sessions
   fun filterSessions(req: SessionFiltersReq): ResponseEntity<SuccessRes<List<SessionSummaryRes>>> {
     val query = sessionFilter.getSessions(authHelper.userRole(), req, authHelper.userId())
     val rawSessions = sessionSummaryView.findAll(query)
@@ -60,6 +80,7 @@ class SessionService(
       .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = sessions))
   }
 
+  // NOTE this function is for finding pending and past student sessions
   fun handleStudentFilter(
     req: StudentSessionFiltersReq
   ): ResponseEntity<SuccessRes<List<StudentSessionsRes>>> {
@@ -155,12 +176,22 @@ class SessionService(
       )
   }
 
+  // NOTE public function to find sessions in which student can enroll per subject
   fun getSessionsBySubjectId(
     subjectId: UUID
   ): ResponseEntity<SuccessRes<List<SessionsForInscriptionRes>>> {
     val subject =
       subjectsRepository.findByIdOrNull(subjectId.toString())
         ?: throw EntityNotFoundException("La materia ingresada no existe")
+    val sessions = getListOfSessionsBySubjectId(subjectId.toString())
+    if (sessions.isEmpty())
+      throw EntityNotFoundException("No hay sesiones disponibles para ${subject.name}")
+    return ResponseEntity.ok()
+      .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = sessions))
+  }
+
+  // NOTE this function finds session in which student can enroll per subject
+  private fun getListOfSessionsBySubjectId(subjectId: String): List<SessionsForInscriptionRes> {
     val sessions =
       jdbcTemplate.query(
         """
@@ -201,11 +232,52 @@ class SessionService(
           )
         },
         authHelper.userId(),
-        subject.id,
+        subjectId,
       )
-    if (sessions.isEmpty())
-      throw EntityNotFoundException("No hay sesiones disponibles para ${subject.name}")
+    return sessions
+  }
+
+  @Transactional
+  fun cancelSession(sessionId: String): ResponseEntity<SuccessRes<String>> {
+    val session =
+      sessionsRepository.findByIdOrNull(sessionId)
+        ?: throw EntityNotFoundException("No se encontró la sesión solicitada")
+    val scheduleStartTime = session.availabilityId.scheduleId.startTime
+    val sessionDate = session.availabilityId.date
+    val sessionStart = LocalDateTime.of(sessionDate, scheduleStartTime)
+    val validDeleteDateTime = sessionStart.minusDays(1)
+    val sessionAssigment =
+      sessionAssignmentRepository.findBySessionId(session)
+        ?: throw IllegalArgumentException("La sesión solicitada no ha sido asignada")
+    val subjectName = sessionAssigment.subjectId.name
+    val tutorId = sessionAssigment.tutorId.id
+    if (tutorId != null && tutorId != authHelper.userId()) {
+      throw EntityNotFoundException(
+        "No se encontró la sesión solicitada entre su lista de sesiones pendientes"
+      )
+    }
+    if (session.status != SessionStatus.ACTIVE)
+      throw IllegalArgumentException("Esta sesión ya no está disponible")
+    if (LocalDateTime.now().isAfter(validDeleteDateTime))
+      throw IllegalArgumentException(
+        "Las sesiones no pueden cancelarse dentro de las 24 horas previas a su inicio"
+      )
+    session.status = SessionStatus.CANCELLED
+    val listOfStudentEmails = mutableListOf<String>()
+    val inscriptions = inscriptionsRepository.findBySessionId(session)
+    inscriptions
+      .takeIf { it.isNotEmpty() }
+      ?.let {
+        it.forEach { inscription -> listOfStudentEmails.add(inscription.studentId.email) }
+        inscriptionsRepository.deleteBySessionId(session)
+        sendGridService.sendEmailAfterSessionCancel(
+          listOfStudentEmails,
+          subjectName,
+          sessionStart,
+          session.availabilityId.classId.id,
+        )
+      }
     return ResponseEntity.ok()
-      .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = sessions))
+      .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = "Se canceló la sesión"))
   }
 }

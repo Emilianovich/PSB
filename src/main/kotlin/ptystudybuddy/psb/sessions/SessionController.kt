@@ -3,6 +3,7 @@ package ptystudybuddy.psb.sessions
 import jakarta.validation.Valid
 import java.util.UUID
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/sessions")
 class SessionController(private val sessionService: SessionService) {
+  @PreAuthorize("hasRole('STUDENT')")
+  @GetMapping("/{sessionId}")
+  fun getSession(@PathVariable sessionId: String) = sessionService.getOneSession(sessionId)
+
   @PreAuthorize("hasRole('TUTOR') or hasRole('ADMIN')")
   @GetMapping
   fun getAll(@Valid @ModelAttribute req: SessionFiltersReq) = sessionService.filterSessions(req)
@@ -31,4 +36,8 @@ class SessionController(private val sessionService: SessionService) {
   @PreAuthorize("hasRole('TUTOR')")
   @PostMapping
   fun create(@Valid @RequestBody req: CreateSession) = sessionService.createSession(req)
+
+  @PreAuthorize("hasRole('TUTOR')")
+  @DeleteMapping("/{sessionId}")
+  fun delete(@PathVariable sessionId: String) = sessionService.cancelSession(sessionId)
 }

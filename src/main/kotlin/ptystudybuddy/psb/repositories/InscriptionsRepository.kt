@@ -14,4 +14,6 @@ interface InscriptionsRepository : JpaRepository<InscriptionsEntity, Inscription
   fun findStudentsBySessionId(sessionId: String, studentId: List<String>): List<InscriptionsEntity>
 
   fun findBySessionId(sessionId: SessionsEntity): List<InscriptionsEntity>
+
+  fun deleteBySessionId(sessionId: SessionsEntity)
 }
