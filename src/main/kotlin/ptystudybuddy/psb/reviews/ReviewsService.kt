@@ -7,18 +7,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import ptystudybuddy.psb.entities.ReviewsEntity
 import ptystudybuddy.psb.entities.TutorsEntity
+import ptystudybuddy.psb.entities.toDto
 import ptystudybuddy.psb.helpers.AuthHelper
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.ReviewsRepository
 import ptystudybuddy.psb.repositories.SessionAssignmentRepository
 import ptystudybuddy.psb.repositories.SessionsRepository
 import ptystudybuddy.psb.repositories.StudentsRepository
-import ptystudybuddy.psb.repositories.TutorsRepository
 
 @Service
 class ReviewsService(
   private val reviewsRepository: ReviewsRepository,
-  private val tutorsRepository: TutorsRepository,
   private val sessionsRepository: SessionsRepository,
   private val sessionAssignmentRepository: SessionAssignmentRepository,
   private val studentsRepository: StudentsRepository,
@@ -48,12 +47,14 @@ class ReviewsService(
     )
   }
 
-  fun getAllReviews(sessionId: String): ResponseEntity<SuccessRes<List<ReviewsEntity>>> {
+  fun getAllReviews(sessionId: String): ResponseEntity<SuccessRes<List<ReviewsDto>>> {
 
     val reviews =
       reviewsRepository.findAllBySessionId(sessionId).takeIf { it.isNotEmpty() }
         ?: throw EntityNotFoundException("No hay retroalimentaciones")
 
-    return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), reviews))
+      val reviewsDto = reviews.map { it.toDto() }
+
+    return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), reviewsDto))
   }
 }
