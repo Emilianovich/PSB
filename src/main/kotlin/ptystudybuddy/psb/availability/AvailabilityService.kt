@@ -36,10 +36,13 @@ class AvailabilityService(
     availabilityData: List<AvailabilityDto>
   ): ResponseEntity<SuccessRes<String>> {
 
-    val todayDates = availabilityData.filter { it.date.isEqual(LocalDate.now()) }
+    val dateNow = LocalDate.now()
+    val todayDates = availabilityData.filter { !it.date.isAfter(dateNow) }
     if (todayDates.isNotEmpty()) {
       val fields = todayDates.joinToString { it.date.toString() }
-      throw UnprocessableEntityException("No se puede usar la fecha de hoy: $fields")
+      throw UnprocessableEntityException(
+        "No se puede usar la fecha de hoy ni una fecha anterior: $fields"
+      )
     }
 
     val classrooms =

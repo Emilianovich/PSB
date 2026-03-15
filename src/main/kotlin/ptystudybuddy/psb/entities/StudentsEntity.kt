@@ -9,6 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import ptystudybuddy.psb.auth.HasEmailAndPassword
+import ptystudybuddy.psb.students.StudentsResponseDto
 
 @Entity
 @Table(name = "students")
@@ -18,7 +19,7 @@ class StudentsEntity(
   @Column(nullable = false, name = "social_id") val socialId: String,
   @Column(nullable = false, unique = true) override var email: String,
   @Column(nullable = false) override var password: String,
-  @Column(nullable = false) val picture: String,
+  @Column(nullable = false) var picture: String,
   val role: String = "STUDENT",
   @OneToMany(mappedBy = "studentId")
   @JsonIgnore
@@ -27,3 +28,13 @@ class StudentsEntity(
   @JsonIgnore
   val inscriptions: MutableList<InscriptionsEntity> = mutableListOf(),
 ) : HasEmailAndPassword
+
+fun StudentsEntity.toStudentsDto(): StudentsResponseDto {
+
+  return StudentsResponseDto(
+    fullname = this.fullname,
+    socialId = this.socialId,
+    email = this.email,
+    picture = this.picture,
+  )
+}
