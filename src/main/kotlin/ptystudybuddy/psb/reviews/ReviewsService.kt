@@ -53,7 +53,7 @@ class ReviewsService(
       reviewsRepository.findAllBySessionId(sessionId).takeIf { it.isNotEmpty() }
         ?: throw EntityNotFoundException("No hay retroalimentaciones")
 
-      val reviewsDto = reviews.map { it.toDto() }
+    val reviewsDto = reviews.map { it.toDto() }
 
     return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), reviewsDto))
   }
