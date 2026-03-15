@@ -3,6 +3,7 @@ package ptystudybuddy.psb.inscriptions
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import java.time.LocalDateTime
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -139,6 +140,41 @@ class InscriptionService(
       SuccessRes(
         statusCode = HttpStatus.OK.value(),
         content = "Asistencia registrada para los estudiantes",
+      )
+    )
+  }
+
+  fun unsubscribe(sessionId: String): ResponseEntity<SuccessRes<String>> {
+
+    val currentUserId = authHelper.userId()
+    val currentDate = LocalDateTime.now()
+    val session =
+      sessionsRepository.findById(sessionId).orElseThrow {
+        EntityNotFoundException("No se encontró una sesión con este id: $sessionId ")
+      }
+
+    val inscription =
+      session.inscriptions.firstOrNull {
+        it.sessionId.id == sessionId && it.studentId.id == currentUserId
+      } ?: throw DataIntegrityViolationException("No estas inscrito en esta sesión")
+
+    session.endDatetime.takeIf { it >= currentDate }
+      ?: throw DataIntegrityViolationException("No te puedes desinscribir, la sesión ya comenzó ")
+
+    inscriptionsRepository.deleteById(inscription.id)
+
+    sendGridService.sendEmailAfterInscriptionCancel(
+      studentEmail = inscription.studentId.email,
+      subjectName =
+        session.sessionsAssignment.first { it.sessionId.id == sessionId }.subjectId.name,
+      sessionDate = session.endDatetime,
+      tutorName = session.sessionsAssignment.first { it.sessionId.id == sessionId }.tutorId.fullname,
+    )
+
+    return ResponseEntity.ok(
+      SuccessRes(
+        statusCode = HttpStatus.OK.value(),
+        content = "Se ha retirado su inscripción de la sesión",
       )
     )
   }
