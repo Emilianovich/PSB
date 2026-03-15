@@ -1,6 +1,5 @@
 package ptystudybuddy.psb.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -12,8 +11,8 @@ import jakarta.persistence.Table
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
-import ptystudybuddy.psb.reviews.ReviewsDto
 import java.time.LocalDateTime
+import ptystudybuddy.psb.reviews.ReviewsDto
 
 @Entity
 @Table(name = "reviews")
@@ -34,19 +33,19 @@ class ReviewsEntity(
 
 fun ReviewsEntity.toDto(): ReviewsDto {
 
-    return ReviewsDto(
-
-        classroom = this.sessionId.availabilityId.classId.id,
-        tutorName = this.tutorId.fullname,
-        score = this.tutorId.score,
-        schedule = "${this.sessionId.availabilityId.scheduleId.startTime} - ${this.sessionId.availabilityId.scheduleId.endTime}",
-        subjectName = this.sessionId.sessionsAssignment
-            .firstOrNull { it.sessionId == sessionId  }?.subjectId?.name,
-        subjectDescription = this.sessionId.sessionsAssignment
-            .firstOrNull { it.sessionId == sessionId  }?.subjectId?.description,
-        studentsAmount = this.sessionId.expectedStudents - this.sessionId.availableSlots
-
-    )
-
-
+  return ReviewsDto(
+    classroom = this.sessionId.availabilityId.classId.id,
+    tutorName = this.tutorId.fullname,
+    score = this.tutorId.score,
+    schedule =
+      "${this.sessionId.availabilityId.scheduleId.startTime} - ${this.sessionId.availabilityId.scheduleId.endTime}",
+    subjectName =
+      this.sessionId.sessionsAssignment.firstOrNull { it.sessionId == sessionId }?.subjectId?.name,
+    subjectDescription =
+      this.sessionId.sessionsAssignment
+        .firstOrNull { it.sessionId == sessionId }
+        ?.subjectId
+        ?.description,
+    studentsAmount = this.sessionId.expectedStudents - this.sessionId.availableSlots,
+  )
 }

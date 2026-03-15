@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-
 @RequestMapping("reviews")
 class ReviewsController(private val reviewsService: ReviewsService) {
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
-    @GetMapping("/{sessionId}")
+  @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
+  @GetMapping("/{sessionId}")
   fun getReviewPerSession(@PathVariable sessionId: String) = reviewsService.getAllReviews(sessionId)
 
   @PreAuthorize("hasRole('STUDENT')")
@@ -23,5 +22,3 @@ class ReviewsController(private val reviewsService: ReviewsService) {
   fun createReview(@Valid @RequestBody review: CreateReviewRequest) =
     reviewsService.createReview(review)
 }
-
-
