@@ -10,16 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@PreAuthorize("hasRole('STUDENT')")
+
 @RequestMapping("reviews")
 class ReviewsController(private val reviewsService: ReviewsService) {
 
-  @GetMapping("/{reviewId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
+    @GetMapping("/{sessionId}")
   fun getReviewPerSession(@PathVariable sessionId: String) = reviewsService.getAllReviews(sessionId)
 
+  @PreAuthorize("hasRole('STUDENT')")
   @PostMapping
   fun createReview(@Valid @RequestBody review: CreateReviewRequest) =
     reviewsService.createReview(review)
 }
 
-data class CreateReviewRequest(val comment: String? = null, val rating: Int, val sessionId: String)
+
