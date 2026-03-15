@@ -55,7 +55,7 @@ CREATE TABLE pending_tutors (
 
 CREATE TABLE classrooms (
     id VARCHAR(5) PRIMARY KEY
-        CHECK (id REGEXP '^[1-4]-[1-4][0-9]{2}$'),
+        CHECK (id REGEXP '^[1-4]-[0-9]{3}$'),
     location VARCHAR(100) NOT NULL
 );
 
@@ -140,7 +140,7 @@ CREATE TABLE refresh_tokens (
     user_id CHAR(36) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     role VARCHAR(8) NOT NULL
-        CHECK (role IN ('ADMIN','STUDENT','TUTOR')),
+        CHECK (role IN ('ADMIN','STUDENT','TUTOR'))
 );
 
 

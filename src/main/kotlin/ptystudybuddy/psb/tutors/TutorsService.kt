@@ -28,12 +28,17 @@ class TutorsService(
       } ?: throw EntityNotFoundException("No se encontraron tutores")
 
     val tutorsDtos =
-      tutors.map {
-        it.toTutorsDto().apply {
+      tutors.map { tutor ->
+        val sessionsConInscripciones =
+          tutor.sessionsAssignment.count { sa -> sa.sessionId.inscriptions.isNotEmpty() }
+
+        tutor.toTutorsDto().apply {
           picture = bucketService.getSignedUrl(picture)
           cv = bucketService.getSignedUrl(cv)
+          sessionsAmount = sessionsConInscripciones.toLong()
         }
       }
+
     return ResponseEntity.ok().body(SuccessRes(HttpStatus.OK.value(), tutorsDtos))
   }
 
