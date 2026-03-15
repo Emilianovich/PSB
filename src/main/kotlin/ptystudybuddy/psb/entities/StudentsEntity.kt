@@ -8,8 +8,8 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import ptystudybuddy.psb.students.StudentsResponseDto
 import ptystudybuddy.psb.auth.HasEmailAndPassword
+import ptystudybuddy.psb.students.StudentsResponseDto
 
 @Entity
 @Table(name = "students")

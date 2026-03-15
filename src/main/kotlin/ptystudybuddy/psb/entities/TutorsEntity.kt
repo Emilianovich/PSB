@@ -10,8 +10,8 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import kotlin.String
-import ptystudybuddy.psb.tutors.TutorsDto
 import ptystudybuddy.psb.auth.HasEmailAndPassword
+import ptystudybuddy.psb.tutors.TutorsDto
 
 @Entity
 @Table(name = "tutors")
