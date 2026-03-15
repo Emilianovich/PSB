@@ -33,19 +33,16 @@ class ReviewsEntity(
 
 fun ReviewsEntity.toDto(): ReviewsDto {
 
+  val assignment = this.sessionId.sessionsAssignment.firstOrNull { it.sessionId == sessionId }
+
   return ReviewsDto(
     classroom = this.sessionId.availabilityId.classId.id,
     tutorName = this.tutorId.fullname,
     score = this.tutorId.score,
     schedule =
       "${this.sessionId.availabilityId.scheduleId.startTime} - ${this.sessionId.availabilityId.scheduleId.endTime}",
-    subjectName =
-      this.sessionId.sessionsAssignment.firstOrNull { it.sessionId == sessionId }?.subjectId?.name,
-    subjectDescription =
-      this.sessionId.sessionsAssignment
-        .firstOrNull { it.sessionId == sessionId }
-        ?.subjectId
-        ?.description,
+    subjectName = assignment?.subjectId?.name,
+    subjectDescription = assignment?.subjectId?.description,
     studentsAmount = this.sessionId.expectedStudents - this.sessionId.availableSlots,
   )
 }
