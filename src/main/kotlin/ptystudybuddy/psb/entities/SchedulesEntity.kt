@@ -7,6 +7,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.time.LocalTime
+import ptystudybuddy.psb.helpers.DateAndTimeHelper
 
 @Entity
 @Table(name = "schedules")
@@ -19,3 +20,13 @@ class SchedulesEntity(
   @JsonIgnore
   val availability: MutableList<AvailabilityEntity> = mutableListOf(),
 )
+
+data class ScheduleRes(val id: String, val startTime: String, val endTime: String)
+
+fun SchedulesEntity.toScheduleRes(): ScheduleRes {
+  return ScheduleRes(
+    id = id,
+    startTime = DateAndTimeHelper.formatTime(startTime),
+    endTime = DateAndTimeHelper.formatTime(endTime),
+  )
+}

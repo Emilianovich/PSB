@@ -9,10 +9,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
+import ptystudybuddy.psb.bucket.BucketService
 import ptystudybuddy.psb.email.SendGridService
 import ptystudybuddy.psb.entities.InscriptionId
+import ptystudybuddy.psb.entities.InscriptionRes
 import ptystudybuddy.psb.entities.InscriptionsEntity
 import ptystudybuddy.psb.entities.SessionStatus
+import ptystudybuddy.psb.entities.toInscriptionRes
 import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
 import ptystudybuddy.psb.helpers.AuthHelper
 import ptystudybuddy.psb.presentation.SuccessRes
@@ -32,6 +35,7 @@ class InscriptionService(
   private val availabilityRepository: AvailabilityRepository,
   private val sendGridService: SendGridService,
   private val sessionAssignmentRepository: SessionAssignmentRepository,
+  private val bucketService: BucketService,
 ) {
   @Transactional
   fun create(req: CreateInscriptionReq): ResponseEntity<SuccessRes<String>> {
@@ -39,7 +43,7 @@ class InscriptionService(
       studentsRepository.findByIdOrNull(authHelper.userId())
         ?: throw EntityNotFoundException("El estudiante no existe")
     val session =
-      sessionsRepository.findByIdOrNull(req.sessionId.toString()).takeUnless { it == null }
+      sessionsRepository.findByIdOrNull(req.sessionId).takeUnless { it == null }
         ?: throw EntityNotFoundException("La sesión solicitada no existe")
     val availability =
       availabilityRepository.findByIdOrNull(session.availabilityId.id.toString())
@@ -177,5 +181,19 @@ class InscriptionService(
         content = "Se ha retirado su inscripción de la sesión",
       )
     )
+  }
+
+  fun getAllInscriptionsPerSession(
+    sessionId: String
+  ): ResponseEntity<SuccessRes<List<InscriptionRes>>> {
+    val session =
+      sessionsRepository.findByIdOrNull(sessionId)
+        ?: throw EntityNotFoundException("No se encontró la sesión buscada")
+    val rawInscriptions =
+      inscriptionsRepository.findBySessionId(session).onEach {
+        it.studentId.picture = bucketService.getSignedUrl(it.studentId.picture)
+      }
+    val inscriptions = rawInscriptions.map { it.toInscriptionRes() }
+    return ResponseEntity.ok(SuccessRes(statusCode = HttpStatus.OK.value(), content = inscriptions))
   }
 }

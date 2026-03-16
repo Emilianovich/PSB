@@ -27,3 +27,16 @@ class InscriptionsEntity(
   @Column(name = "evaluation_status") var evaluationStatus: Boolean? = null,
   @Column(columnDefinition = "TIMESTAMP", name = "date_time") val dateTime: LocalDateTime? = null,
 )
+
+data class InscriptionRes(
+  val studentName: String,
+  val studentPicture: String,
+  val studentEmail: String,
+)
+
+fun InscriptionsEntity.toInscriptionRes() =
+  InscriptionRes(
+    studentName = studentId.fullname,
+    studentPicture = studentId.picture,
+    studentEmail = studentId.email,
+  )
