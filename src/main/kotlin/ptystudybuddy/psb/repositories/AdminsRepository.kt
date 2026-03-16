@@ -5,4 +5,6 @@ import ptystudybuddy.psb.entities.AdminsEntity
 
 interface AdminsRepository : JpaRepository<AdminsEntity, String> {
   fun findByEmail(email: String): AdminsEntity?
+
+  fun findBySocialId(socialId: String): AdminsEntity?
 }

@@ -3,12 +3,10 @@ package ptystudybuddy.psb.sessions
 import jakarta.persistence.criteria.Predicate
 import java.time.LocalDate
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.stereotype.Service
 import ptystudybuddy.psb.entities.SessionStatus
 import ptystudybuddy.psb.entities.SessionSummaryEntity
 
-@Service
-class SessionFilter {
+object SessionFilter {
   fun getSessions(
     role: String,
     filter: SessionFiltersReq,
