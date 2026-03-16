@@ -11,26 +11,20 @@ import ptystudybuddy.psb.repositories.AdminsRepository
 
 @Service
 class AdminsService(
-    private val adminsRepository: AdminsRepository,
-    private val authHelper: AuthHelper,){
+  private val adminsRepository: AdminsRepository,
+  private val authHelper: AuthHelper,
+) {
 
-    fun getProfile(): ResponseEntity<SuccessRes<AdminsDto>> {
+  fun getProfile(): ResponseEntity<SuccessRes<AdminsDto>> {
 
+    val userId = authHelper.userId()
+    val admin =
+      adminsRepository.findById(userId).orElseThrow {
+        EntityNotFoundException("Admin no encontrado $userId")
+      }
 
-        val userId = authHelper.userId()
-        val admin = adminsRepository
-            .findById(userId)
-            .orElseThrow { EntityNotFoundException("Admin no encontrado $userId") }
+    val adminDto = admin.toDto()
 
-        val adminDto = admin.toDto()
-
-
-        return ResponseEntity.ok(
-            SuccessRes(
-            HttpStatus.OK.value(),
-            adminDto)
-        )
-
-    }
-
+    return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), adminDto))
+  }
 }

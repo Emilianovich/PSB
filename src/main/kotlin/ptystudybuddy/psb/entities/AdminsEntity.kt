@@ -20,12 +20,7 @@ class AdminsEntity(
   @Column(nullable = false) val role: String = "ADMIN",
 ) : HasEmailAndPassword
 
-
 fun AdminsEntity.toDto(): AdminsDto {
 
-    return AdminsDto(
-        socialId = this.socialId,
-        fullname = this.fullname,
-        email = this.email,
-    )
+  return AdminsDto(socialId = this.socialId, fullname = this.fullname, email = this.email)
 }
