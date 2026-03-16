@@ -30,7 +30,7 @@ class InscriptionsEntity(
 
 data class InscriptionRes(
   val studentName: String,
-  val studentPicture: String,
+  var studentPicture: String,
   val studentEmail: String,
 )
 
