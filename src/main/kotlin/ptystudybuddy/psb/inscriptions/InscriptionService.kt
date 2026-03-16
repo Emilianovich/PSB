@@ -191,7 +191,7 @@ class InscriptionService(
         ?: throw EntityNotFoundException("No se encontró la sesión buscada")
     val rawInscriptions = inscriptionsRepository.findBySessionId(session)
     val inscriptions = rawInscriptions.map { it.toInscriptionRes() }
-    inscriptions.onEach { it.studentPicture = bucketService.getSignedUrl(it.studentPicture)}
+    inscriptions.onEach { it.studentPicture = bucketService.getSignedUrl(it.studentPicture) }
     return ResponseEntity.ok(SuccessRes(statusCode = HttpStatus.OK.value(), content = inscriptions))
   }
 }
