@@ -16,6 +16,7 @@ class JwtService(@Value("\${secret.key}") private val rawKey: String) {
   private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(rawKey))
 
   // FIXME CHANGE FOR PROD BACK TO 2 MIN
+  // TODO Change to app.properties values
   private val accessTokenValidity = Duration.ofMinutes(50).toMillis()
   val refreshTokenValidity = Duration.ofDays(7).toMillis()
 

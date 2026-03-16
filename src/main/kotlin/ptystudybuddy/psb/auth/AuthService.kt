@@ -3,22 +3,17 @@ package ptystudybuddy.psb.auth
 import jakarta.persistence.EntityNotFoundException
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
-import jakarta.transaction.Transactional
 import java.security.MessageDigest
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.Base64
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
-import ptystudybuddy.psb.bucket.BucketService
-import ptystudybuddy.psb.entities.PendingTutorsEntity
 import ptystudybuddy.psb.entities.RefreshTokensEntity
-import ptystudybuddy.psb.entities.StudentsEntity
 import ptystudybuddy.psb.exceptions.customs.UnprocessableEntityException
 import ptystudybuddy.psb.helpers.AuthHelper
 import ptystudybuddy.psb.jwt.JwtService
@@ -41,10 +36,7 @@ class AuthService(
   private val res: HttpServletResponse,
   private val authHelper: AuthHelper,
   private val refreshTokensRepository: RefreshTokensRepository,
-  private val bucketService: BucketService,
 ) {
-  // REVIEW Consider adding to interface fullname, role and id to avoid a function with so many
-  // params
   private fun <T : HasEmailAndPassword> validateUser(
     entity: T,
     entityId: String?,
@@ -106,76 +98,6 @@ class AuthService(
         maxAge = 604800
       }
     )
-  }
-
-  fun registerStudent(req: StudentRegisterReq): ResponseEntity<SuccessRes<String>> {
-    val picture = bucketService.upload(req.picture)
-    studentsRepository.save(
-      StudentsEntity(
-        fullname = req.fullName,
-        socialId = req.socialId,
-        email = req.email,
-        password = bCryptPasswordEncoder.encode(req.password),
-        picture = picture,
-      )
-    )
-    return ResponseEntity.status(HttpStatus.CREATED)
-      .body(
-        SuccessRes(
-          statusCode = HttpStatus.CREATED.value(),
-          content = "${req.fullName} tu cuenta fue creada exitosamente!",
-        )
-      )
-  }
-
-  // REVIEW
-  @Transactional
-  fun registerTutor(req: TutorRegisterReq): ResponseEntity<SuccessRes<String>> {
-    // If the email sent exists and not blacklisted, tutor should have the same socialId
-    // Else we should throw an exception, email can only be updated if socialIds are the same
-    val isSamePendingTutor = pendingTutorsRepository.findByEmailAndBlacklistedAtIsNull(req.email)
-    isSamePendingTutor?.let {
-      it.takeUnless { it.socialId != req.socialId }
-        ?: throw DataIntegrityViolationException(
-          "La cédula ingresada no coincide con su cédula anterior"
-        )
-    }
-    val pendingTutor = pendingTutorsRepository.findBySocialIdAndBlacklistedAtIsNull(req.socialId)
-    pendingTutor?.let {
-      pendingTutor.picture = bucketService.update(req.picture, pendingTutor.picture)
-      pendingTutor.cv = bucketService.update(req.cv, pendingTutor.cv)
-      pendingTutor.password = bCryptPasswordEncoder.encode(req.password)
-      pendingTutor.email = req.email
-      pendingTutorsRepository.save(pendingTutor)
-      return ResponseEntity.status(HttpStatus.OK)
-        .body(
-          SuccessRes(
-            statusCode = HttpStatus.OK.value(),
-            content =
-              "${pendingTutor.fullname}, tu solicitud fue actualizada y será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión",
-          )
-        )
-    }
-    val picture = bucketService.upload(req.picture)
-    val cv = bucketService.upload(req.cv)
-    pendingTutorsRepository.save(
-      PendingTutorsEntity(
-        socialId = req.socialId,
-        fullname = req.fullName,
-        picture = picture,
-        cv = cv,
-        email = req.email,
-        password = bCryptPasswordEncoder.encode(req.password),
-      )
-    )
-    return ResponseEntity.status(HttpStatus.CREATED)
-      .body(
-        SuccessRes(
-          statusCode = HttpStatus.CREATED.value(),
-          content =
-            "${req.fullName}, tu solicitud será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión",
-        )
-      )
   }
 
   fun refreshAccessToken(): ResponseEntity<SuccessRes<String>> {

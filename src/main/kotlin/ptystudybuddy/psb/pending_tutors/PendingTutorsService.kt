@@ -7,20 +7,74 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import ptystudybuddy.psb.auth.TutorRegisterReq
 import ptystudybuddy.psb.bucket.BucketService
 import ptystudybuddy.psb.email.SendGridService
+import ptystudybuddy.psb.entities.PendingTutorsEntity
 import ptystudybuddy.psb.entities.TutorsEntity
 import ptystudybuddy.psb.presentation.SuccessRes
 import ptystudybuddy.psb.repositories.PendingTutorsRepository
 import ptystudybuddy.psb.repositories.TutorsRepository
+import ptystudybuddy.psb.security.BCryptService
 
 @Service
 class PendingTutorsService(
-  val pendingTutorsRepository: PendingTutorsRepository,
-  val tutorRepository: TutorsRepository,
-  val emailService: SendGridService,
-  val bucketService: BucketService,
+  private val pendingTutorsRepository: PendingTutorsRepository,
+  private val tutorRepository: TutorsRepository,
+  private val emailService: SendGridService,
+  private val bucketService: BucketService,
+  private val bCryptPasswordEncoder: BCryptService,
 ) {
+
+  // REVIEW
+  @Transactional
+  fun registerTutor(req: TutorRegisterReq): ResponseEntity<SuccessRes<String>> {
+    // If the email sent exists and not blacklisted, tutor should have the same socialId
+    // Else we should throw an exception, email can only be updated if socialIds are the same
+    val isSamePendingTutor = pendingTutorsRepository.findByEmailAndBlacklistedAtIsNull(req.email)
+    isSamePendingTutor?.let {
+      it.takeUnless { it.socialId != req.socialId }
+        ?: throw DataIntegrityViolationException(
+          "La cédula ingresada no coincide con su cédula anterior"
+        )
+    }
+    val pendingTutor = pendingTutorsRepository.findBySocialIdAndBlacklistedAtIsNull(req.socialId)
+    pendingTutor?.let {
+      pendingTutor.picture = bucketService.update(req.picture, pendingTutor.picture)
+      pendingTutor.cv = bucketService.update(req.cv, pendingTutor.cv)
+      pendingTutor.password = bCryptPasswordEncoder.encode(req.password)
+      pendingTutor.email = req.email
+      pendingTutorsRepository.save(pendingTutor)
+      return ResponseEntity.status(HttpStatus.OK)
+        .body(
+          SuccessRes(
+            statusCode = HttpStatus.OK.value(),
+            content =
+              "${pendingTutor.fullname}, tu solicitud fue actualizada y será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión",
+          )
+        )
+    }
+    val picture = bucketService.upload(req.picture)
+    val cv = bucketService.upload(req.cv)
+    pendingTutorsRepository.save(
+      PendingTutorsEntity(
+        socialId = req.socialId,
+        fullname = req.fullName,
+        picture = picture,
+        cv = cv,
+        email = req.email,
+        password = bCryptPasswordEncoder.encode(req.password),
+      )
+    )
+    return ResponseEntity.status(HttpStatus.CREATED)
+      .body(
+        SuccessRes(
+          statusCode = HttpStatus.CREATED.value(),
+          content =
+            "${req.fullName}, tu solicitud será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión",
+        )
+      )
+  }
 
   fun getAllPendingTutors(): ResponseEntity<SuccessRes<List<PendingTutorsResponseDto>>> {
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tutors")
-class TutorsController(val tutorsService: TutorsService) {
+class TutorsController(private val tutorsService: TutorsService) {
 
   @PreAuthorize("hasRole('TUTOR')")
   @GetMapping("/profile")
