@@ -6,7 +6,6 @@ import ptystudybuddy.psb.entities.TutorsEntity
 
 interface TutorsRepository :
   JpaRepository<TutorsEntity, String>, JpaSpecificationExecutor<TutorsEntity> {
-
   fun findByEmail(email: String): TutorsEntity?
 
   fun findBySocialId(id: String): TutorsEntity?

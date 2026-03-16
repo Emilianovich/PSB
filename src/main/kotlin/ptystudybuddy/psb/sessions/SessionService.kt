@@ -42,7 +42,6 @@ class SessionService(
   private val authHelper: AuthHelper,
   private val jdbcTemplate: JdbcTemplate,
   private val sessionSummaryView: SessionSummaryRepository,
-  private val sessionFilter: SessionFilter,
   private val studentSessions: StudentSessionsRepository,
   private val studentSessionFilter: StudentSessionFilter,
   private val bucketService: BucketService,
@@ -68,7 +67,7 @@ class SessionService(
 
   // NOTE For admin is to find session per day and tutors to see their past and pending sessions
   fun filterSessions(req: SessionFiltersReq): ResponseEntity<SuccessRes<List<SessionSummaryRes>>> {
-    val query = sessionFilter.getSessions(authHelper.userRole(), req, authHelper.userId())
+    val query = SessionFilter.getSessions(authHelper.userRole(), req, authHelper.userId())
     val rawSessions = sessionSummaryView.findAll(query)
     rawSessions.takeUnless { it.isEmpty() }
       ?: throw EntityNotFoundException("No se encontró sesiones que cumplan lo solicitado")

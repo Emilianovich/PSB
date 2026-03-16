@@ -3,11 +3,13 @@ package ptystudybuddy.psb.auth
 import jakarta.persistence.EntityNotFoundException
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
+import jakarta.transaction.Transactional
 import java.security.MessageDigest
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.Base64
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -41,53 +43,49 @@ class AuthService(
   private val refreshTokensRepository: RefreshTokensRepository,
   private val bucketService: BucketService,
 ) {
+  // REVIEW Consider adding to interface fullname, role and id to avoid a function with so many
+  // params
+  private fun <T : HasEmailAndPassword> validateUser(
+    entity: T,
+    entityId: String?,
+    entityRole: String,
+    entityFullName: String,
+    plainPassword: String,
+  ): ResponseEntity<SuccessRes<String>> {
+    val id =
+      entityId.takeIf { it != null }
+        ?: throw UnprocessableEntityException("Correo o contraseña incorrectos")
+    if (bCryptPasswordEncoder.matches(plainPassword, entity.password)) {
+      val accessToken = jwtService.generateAccessToken(id, entityRole)
+      val refreshToken = jwtService.generateRefreshToken(id, entityRole)
+      storeRefreshToken(refreshToken)
+      setCookies(accessToken, refreshToken)
+      return ResponseEntity.ok(
+        SuccessRes(statusCode = HttpStatus.OK.value(), content = "Bienvenido $entityFullName")
+      )
+    }
+    throw AccessDeniedException("Correo o contraseña incorrectos")
+  }
+
   fun login(req: LoginReq): ResponseEntity<SuccessRes<String>> {
     val adminRegex = Regex("^[a-zA-Z0-9._%+\\-]+@ptystudybuddy\\.dev$")
     if (req.email.matches(adminRegex)) {
       val admin =
         adminsRepository.findByEmail(req.email)
           ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-      admin.takeIf { bCryptPasswordEncoder.matches(req.password, admin.password) }
-        ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-
-      val id = admin.id ?: throw IllegalArgumentException("Correo o contraseña incorrectos")
-      val accessToken = jwtService.generateAccessToken(id, admin.role)
-      val refreshToken = jwtService.generateRefreshToken(admin.id, admin.role)
-      storeRefreshToken(refreshToken)
-      setCookies(accessToken, refreshToken)
-      return ResponseEntity.ok(
-        SuccessRes(statusCode = HttpStatus.OK.value(), content = "Bienvenido ${admin.fullname}")
-      )
+      return validateUser(admin, admin.id, admin.role, admin.fullname, req.password)
     }
-
     val tutor =
       tutorsRepository.findByEmail(req.email)
         ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-    tutor.takeIf { bCryptPasswordEncoder.matches(req.password, tutor.password) }
-      ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-    val id = tutor.id ?: throw IllegalArgumentException("Correo o contraseña incorrectos")
-    setCookies(
-      jwtService.generateAccessToken(id, tutor.role),
-      jwtService.generateRefreshToken(tutor.id, tutor.role),
-    )
-    return ResponseEntity.ok(
-      SuccessRes(statusCode = HttpStatus.OK.value(), content = "Bienvenido ${tutor.fullname}")
-    )
+    return validateUser(tutor, tutor.id, tutor.role, tutor.fullname, req.password)
   }
 
   fun studentLogin(req: LoginReq): ResponseEntity<SuccessRes<String>> {
     val student =
       studentsRepository.findByEmail(req.email)
         ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-    student.takeIf { bCryptPasswordEncoder.matches(req.password, student.password) }
-      ?: throw AccessDeniedException("Correo o contraseña incorrectos")
-    val id = student.id ?: throw UnprocessableEntityException("Estudiante no válido")
-    val refreshToken = jwtService.generateRefreshToken(id, student.role)
-    storeRefreshToken(refreshToken)
-    setCookies(jwtService.generateAccessToken(id, student.role), refreshToken)
-    return ResponseEntity.ok(
-      SuccessRes(statusCode = HttpStatus.OK.value(), content = "Bienvenido ${student.fullname}")
-    )
+    return validateUser(student, student.id, student.role, student.fullname, req.password)
   }
 
   private fun setCookies(accessToken: String, refreshToken: String) {
@@ -111,7 +109,6 @@ class AuthService(
   }
 
   fun registerStudent(req: StudentRegisterReq): ResponseEntity<SuccessRes<String>> {
-    // TODO Save user Picture with Bucket service
     val picture = bucketService.upload(req.picture)
     studentsRepository.save(
       StudentsEntity(
@@ -131,10 +128,34 @@ class AuthService(
       )
   }
 
+  // REVIEW
+  @Transactional
   fun registerTutor(req: TutorRegisterReq): ResponseEntity<SuccessRes<String>> {
-    // TODO Save tutor picture with Bucket service
-    // TODO Save tutor cv with Bucket service
-    // TODO Missing validation when tutor has applied, but hasn't been reviewed
+    // If the email sent exists and not blacklisted, tutor should have the same socialId
+    // Else we should throw an exception, email can only be updated if socialIds are the same
+    val isSamePendingTutor = pendingTutorsRepository.findByEmailAndBlacklistedAtIsNull(req.email)
+    isSamePendingTutor?.let {
+      it.takeUnless { it.socialId != req.socialId }
+        ?: throw DataIntegrityViolationException(
+          "La cédula ingresada no coincide con su cédula anterior"
+        )
+    }
+    val pendingTutor = pendingTutorsRepository.findBySocialIdAndBlacklistedAtIsNull(req.socialId)
+    pendingTutor?.let {
+      pendingTutor.picture = bucketService.update(req.picture, pendingTutor.picture)
+      pendingTutor.cv = bucketService.update(req.cv, pendingTutor.cv)
+      pendingTutor.password = bCryptPasswordEncoder.encode(req.password)
+      pendingTutor.email = req.email
+      pendingTutorsRepository.save(pendingTutor)
+      return ResponseEntity.status(HttpStatus.OK)
+        .body(
+          SuccessRes(
+            statusCode = HttpStatus.OK.value(),
+            content =
+              "${pendingTutor.fullname}, tu solicitud fue actualizada y será procesada por nuestro equipo. Te llegará un correo donde se te informará sobre nuestra decisión",
+          )
+        )
+    }
     val picture = bucketService.upload(req.picture)
     val cv = bucketService.upload(req.cv)
     pendingTutorsRepository.save(
