@@ -19,12 +19,11 @@ class AdminsService(
 
     val userId = authHelper.userId()
     val admin =
-      adminsRepository.findById(userId).orElseThrow {
-        EntityNotFoundException("Admin no encontrado $userId")
-      }
+      adminsRepository
+        .findById(userId)
+        .orElseThrow { EntityNotFoundException("Admin con id: $userId no encontrado") }
+        .toDto()
 
-    val adminDto = admin.toDto()
-
-    return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), adminDto))
+    return ResponseEntity.ok(SuccessRes(HttpStatus.OK.value(), admin))
   }
 }
