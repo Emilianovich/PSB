@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import ptystudybuddy.psb.admins.AdminsDto
 import ptystudybuddy.psb.auth.HasEmailAndPassword
 
 @Entity
@@ -18,3 +19,13 @@ class AdminsEntity(
   @Column(nullable = false) override var password: String,
   @Column(nullable = false) val role: String = "ADMIN",
 ) : HasEmailAndPassword
+
+
+fun AdminsEntity.toDto(): AdminsDto {
+
+    return AdminsDto(
+        socialId = this.socialId,
+        fullname = this.fullname,
+        email = this.email,
+    )
+}
