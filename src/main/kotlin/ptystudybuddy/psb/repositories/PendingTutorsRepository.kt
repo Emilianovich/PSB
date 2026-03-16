@@ -6,8 +6,15 @@ import ptystudybuddy.psb.entities.PendingTutorsEntity
 interface PendingTutorsRepository : JpaRepository<PendingTutorsEntity, String> {
   fun findAllByApprovedIsNull(): List<PendingTutorsEntity>
 
+  fun findBySocialId(socialId: String): PendingTutorsEntity?
+
+  fun findByEmail(email: String): PendingTutorsEntity?
+
   fun existsByEmailAndBlacklistedAtIsNotNull(email: String): Boolean
 
   fun existsBySocialIdAndBlacklistedAtIsNotNull(socialId: String): Boolean
-  // TODO Add function for when tutor hasn't been blacklisted
+
+  fun findBySocialIdAndBlacklistedAtIsNull(socialId: String): PendingTutorsEntity?
+
+  fun findByEmailAndBlacklistedAtIsNull(email: String): PendingTutorsEntity?
 }
