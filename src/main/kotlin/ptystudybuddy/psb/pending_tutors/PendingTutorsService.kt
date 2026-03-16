@@ -130,7 +130,7 @@ class PendingTutorsService(
 
     tutor.takeIf { it.approved == null }
       ?: throw DataIntegrityViolationException(
-        "El postulante se encuentra en blacklist, intentar despues de ${tutor.blacklistedAt}"
+        "El postulante se encuentra en blacklist, intentar después de ${tutor.blacklistedAt}"
       )
 
     if (pendingTutorsData.approved) {
