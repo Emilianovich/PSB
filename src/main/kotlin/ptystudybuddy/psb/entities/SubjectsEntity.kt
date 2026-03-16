@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import ptystudybuddy.psb.subjects.SubjectsDto
 
 @Entity
 @Table(name = "subjects")
@@ -19,3 +20,8 @@ class SubjectsEntity(
   @JsonIgnore
   val sessionsAssignment: MutableList<SessionAssignmentEntity> = mutableListOf(),
 )
+
+fun SubjectsEntity.toDto(): SubjectsDto {
+
+  return SubjectsDto(name = this.name, description = this.description)
+}
