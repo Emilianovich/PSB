@@ -247,10 +247,7 @@ class SessionService(
         """
         SELECT av.class_id as classId,
            tu.fullname as tutorName,
-           tu.picture as tutorPicture,
            tu.score as tutorScore,
-           sub.name as subjectName,
-           sub.description as subjectDesc,
            av.date as sessionDate,
            sch.start_time as sessionStartTime,
            sch.end_time as sessionEndTime,
