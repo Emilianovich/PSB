@@ -235,7 +235,8 @@ class SessionService(
       )
     return sessions
   }
-// NOTE this function retrieves all sessions of a specific tutor where a student can participate
+
+  // NOTE this function retrieves all sessions of a specific tutor where a student can participate
   fun getListOfSessionsByTutorId(
     tutorId: UUID
   ): ResponseEntity<SuccessRes<List<SessionsForInscriptionRes>>> {
