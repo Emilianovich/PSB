@@ -236,6 +236,58 @@ class SessionService(
     return sessions
   }
 
+  fun getListOfSessionsByTutorId(
+    tutorId: UUID
+  ): ResponseEntity<SuccessRes<List<SessionsForInscriptionRes>>> {
+    tutorsRepository.findById(tutorId.toString()).orElseThrow {
+      EntityNotFoundException("Este tutor no existe")
+    }
+    val tutorSessions =
+      jdbcTemplate.query(
+        """
+        SELECT av.class_id as classId,
+           tu.fullname as tutorName,
+           tu.picture as tutorPicture,
+           tu.score as tutorScore,
+           sub.name as subjectName,
+           sub.description as subjectDesc,
+           av.date as sessionDate,
+           sch.start_time as sessionStartTime,
+           sch.end_time as sessionEndTime,
+           s.id as sessionId,
+           (SELECT COUNT(*) FROM inscriptions ins WHERE ins.session_id = s.id) as amountOfStudents,
+           s.expected_students as sessionSlots
+    FROM availability av
+    INNER JOIN sessions s ON av.id = s.availability_id
+    INNER JOIN session_assignment sa ON s.id = sa.session_id
+    INNER JOIN tutors tu ON sa.tutor_id = tu.id
+    INNER JOIN subjects sub ON sa.subject_id = sub.id
+    INNER JOIN schedules sch ON av.schedule_id = sch.id
+    LEFT JOIN inscriptions ins ON s.id = ins.session_id AND ins.student_id = ?
+    WHERE ins.session_id IS NULL AND tu.id = ? AND TIMESTAMP(av.date, sch.start_time) > NOW()
+      """,
+        { rs, _ ->
+          SessionsForInscriptionRes(
+            tutorName = rs.getString("tutorName"),
+            tutorScore = rs.getBigDecimal("tutorScore"),
+            classId = rs.getString("classId"),
+            sessionDate = DateAndTimeHelper.formatDate(rs.getDate("sessionDate").toLocalDate()),
+            sessionStartTime =
+              DateAndTimeHelper.formatTime(rs.getTime("sessionStartTime").toLocalTime()),
+            sessionEndTime =
+              DateAndTimeHelper.formatTime(rs.getTime("sessionEndTime").toLocalTime()),
+            amountOfStudents = rs.getInt("amountOfStudents"),
+            sessionSlots = rs.getInt("sessionSlots"),
+            sessionId = rs.getString("sessionId"),
+          )
+        },
+        authHelper.userId(),
+        tutorId.toString(),
+      )
+    return ResponseEntity.ok()
+      .body(SuccessRes(statusCode = HttpStatus.OK.value(), content = tutorSessions))
+  }
+
   @Transactional
   fun cancelSession(sessionId: String): ResponseEntity<SuccessRes<String>> {
     val session =
