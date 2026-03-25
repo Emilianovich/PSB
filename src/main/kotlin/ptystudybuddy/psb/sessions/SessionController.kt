@@ -29,6 +29,10 @@ class SessionController(private val sessionService: SessionService) {
     sessionService.getSessionsBySubjectId(subjectId)
 
   @PreAuthorize("hasRole('STUDENT')")
+  @GetMapping("/tutors/{tutorId}")
+  fun getByTutorId(@PathVariable tutorId: UUID) = sessionService.getListOfSessionsByTutorId(tutorId)
+
+  @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/student")
   fun getStudentSessions(@Valid @ModelAttribute req: StudentSessionFiltersReq) =
     sessionService.handleStudentFilter(req)
